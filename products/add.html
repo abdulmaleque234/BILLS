@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Product — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" media="print" onload="this.media='all'">
+</head>
+<body>
+<div class="app-wrapper">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div>
+      <div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div>
+    </div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i> Customers</a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link active"><i class="bi bi-box-seam"></i> Products</a></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i> Invoices</a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i> Payments</a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i> Expenses</a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i> Reports</a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i> Reminders</a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i> Activity Log</a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i> Settings</a></li>
+      <li class="nav-item"><a href="../profile.html" class="nav-link"><i class="bi bi-person-circle"></i> Profile</a></li>
+    </ul></nav>
+    <div class="sidebar-footer">Bills v1.0 &copy; 2025</div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <button id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <span class="topbar-title">Add Product</span>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Home</a><i class="bi bi-chevron-right"></i><a href="./index.html">Products</a><i class="bi bi-chevron-right"></i><span>Add</span></div>
+          <h1 class="page-title">Add New Product</h1>
+        </div>
+        <a href="./index.html" class="btn-custom btn-outline-custom"><i class="bi bi-arrow-left"></i> Back</a>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-box-seam"></i> Product Details</span></div>
+            <div class="card-body-custom">
+              <form id="addProductForm" onsubmit="saveProduct(event)">
+                <div class="mb-3">
+                  <label class="form-label-custom">Product Name <span class="text-danger">*</span></label>
+                  <input type="text" id="pName" class="form-control-custom" placeholder="e.g. USB-C Cable 1M" required>
+                </div>
+                <div class="form-row form-row-2 mb-3">
+                  <div>
+                    <label class="form-label-custom">Category <span class="text-danger">*</span></label>
+                    <select id="pCategory" class="form-control-custom" required>
+                      <option value="">-- Select Category --</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label-custom">Selling Price (₹) <span class="text-danger">*</span></label>
+                    <input type="number" id="pPrice" class="form-control-custom" min="0" step="0.01" placeholder="0.00" required>
+                  </div>
+                </div>
+                <div class="form-row form-row-3 mb-3">
+                  <div>
+                    <label class="form-label-custom">Opening Stock</label>
+                    <input type="number" id="pStock" class="form-control-custom" min="0" value="0">
+                  </div>
+                  <div>
+                    <label class="form-label-custom">Min Stock (Alert)</label>
+                    <input type="number" id="pMinStock" class="form-control-custom" min="0" value="5">
+                  </div>
+                  <div>
+                    <label class="form-label-custom">Purchase Cost (₹)</label>
+                    <input type="number" id="pCost" class="form-control-custom" min="0" step="0.01" placeholder="0.00">
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <label class="form-label-custom">Description</label>
+                  <textarea id="pDesc" class="form-control-custom" rows="2" placeholder="Optional product description..."></textarea>
+                </div>
+                <div class="d-flex gap-3">
+                  <button type="submit" class="btn-custom btn-primary-custom"><i class="bi bi-save"></i> Save Product</button>
+                  <button type="reset" class="btn-custom btn-outline-custom"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-info-circle"></i> Info</span></div>
+            <div class="card-body-custom" style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+              <p><i class="bi bi-check2 text-success me-1"></i> Product ID is auto-generated.</p>
+              <p><i class="bi bi-check2 text-success me-1"></i> Opening stock is set when adding.</p>
+              <p><i class="bi bi-check2 text-success me-1"></i> Low stock alert at min stock level.</p>
+              <p><i class="bi bi-check2 text-success me-1"></i> Purchase cost for profit tracking.</p>
+              <hr>
+              <a href="../categories/index.html" class="btn-custom btn-outline-custom w-100 justify-content-center"><i class="bi bi-tags"></i> Manage Categories</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+
+  // Populate categories from localStorage
+  const cats = Store.get('categories', []);
+  const sel = document.getElementById('pCategory');
+  if (cats.length === 0) {
+    sel.innerHTML = '<option value="General">General</option>';
+  } else {
+    sel.innerHTML = '<option value="">-- Select Category --</option>' +
+      cats.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+  }
+
+  // Edit mode: pre-fill form if ?id= is given
+  const params = new URLSearchParams(window.location.search);
+  const editId = params.get('id');
+  if (editId) {
+    const p = Store.get('products', []).find(x => x.id === editId);
+    if (p) {
+      document.querySelector('h1').textContent = 'Edit Product';
+      document.querySelector('[type=submit]').innerHTML = '<i class="bi bi-save"></i> Update Product';
+      document.getElementById('pName').value = p.name;
+      sel.value = p.category;
+      document.getElementById('pPrice').value = p.price;
+      document.getElementById('pStock').value = p.stock;
+      document.getElementById('pMinStock').value = p.minStock;
+      document.getElementById('pCost').value = p.costPrice || p.cost || '';
+      document.getElementById('pDesc').value = p.desc || p.description || '';
+      document.getElementById('addProductForm').dataset.editId = editId;
+    }
+  }
+});
+
+function saveProduct(e) {
+  e.preventDefault();
+  const editId = document.getElementById('addProductForm').dataset.editId;
+  const products = Store.get('products', []);
+  const product = {
+    id: editId || Utils.generateId('P', products),
+    name: document.getElementById('pName').value.trim(),
+    category: document.getElementById('pCategory').value,
+    price: parseFloat(document.getElementById('pPrice').value) || 0,
+    stock: parseInt(document.getElementById('pStock').value) || 0,
+    minStock: parseInt(document.getElementById('pMinStock').value) || 5,
+    costPrice: parseFloat(document.getElementById('pCost').value) || 0,
+    description: document.getElementById('pDesc').value.trim(),
+    created: editId ? undefined : Utils.today(),
+  };
+
+  if (editId) {
+    const idx = products.findIndex(p => p.id === editId);
+    if (idx > -1) {
+      product.created = products[idx].created;
+      products[idx] = product;
+    }
+    ActivityLog.push(`Updated product: ${product.name}`);
+    Utils.toast('Product updated!');
+  } else {
+    products.push(product);
+    // Stock log entry for opening stock
+    if (product.stock > 0) {
+      const log = Store.get('stockLog', []);
+      log.push({ productId: product.id, product: product.name, type: 'IN', qty: product.stock, note: 'Opening stock', date: Utils.today() });
+      Store.set('stockLog', log);
+    }
+    ActivityLog.push(`Added product: ${product.name}`);
+    Utils.toast('Product added successfully!');
+  }
+
+  Store.set('products', products);
+  setTimeout(() => window.location.href = './index.html', 800);
+}
+</script>
+</body>
+</html>

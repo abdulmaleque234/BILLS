@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="./assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div>
+      <div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div>
+      <button class="sidebar-collapse-btn" id="collapseBtn" title="Collapse"><i class="bi bi-chevron-left"></i></button>
+    </div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="./index.html" class="nav-link active"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="./customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="./suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="./products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="./staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="./invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="./quotations/index.html" class="nav-link"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="./payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="./returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="./purchase-orders/index.html" class="nav-link"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="./expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="./reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="./taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="./reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span><span class="badge-count alert" id="reminderBadge" style="display:none;"></span></a></li>
+      <li class="nav-item"><a href="./activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="./backup/index.html" class="nav-link"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="./settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+      <li class="nav-item"><a href="./profile.html" class="nav-link"><i class="bi bi-person-circle"></i><span class="nav-label-text">Profile</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v3.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content" id="mainContent">
+    <header class="topbar">
+      <button id="sidebarToggle" aria-label="Toggle sidebar"><i class="bi bi-list"></i></button>
+      <div class="live-clock ms-2 d-none d-md-flex"><i class="bi bi-clock"></i><span class="time" id="liveClock">--:--</span><span id="liveDate" style="font-size:11px;color:var(--text-muted);margin-left:4px;"></span></div>
+      <button class="topbar-search-btn ms-3 no-print d-none d-md-flex" onclick="openGlobalSearch()">
+        <i class="bi bi-search"></i> Search anything… <kbd>Ctrl K</kbd>
+      </button>
+    </header>
+
+    <main class="page-content">
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="page-header-left">
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-subtitle" id="greetMsg">Welcome back!</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="./quotations/create.html" class="btn-custom btn-outline-custom"><i class="bi bi-file-earmark-plus"></i> New Quote</a>
+          <a href="./invoices/create.html" class="btn-custom btn-primary-custom"><i class="bi bi-plus-lg"></i> New Invoice</a>
+        </div>
+      </div>
+
+      <!-- Today Banner -->
+      <div class="today-banner mb-4" id="todayBanner">
+        <div class="tb-group">
+          <div class="tb-label">Today's Collection</div>
+          <div class="tb-val" id="todayCollection">₹0</div>
+        </div>
+        <div class="tb-group">
+          <div class="tb-label">Today's Invoices</div>
+          <div class="tb-val" id="todayInvoices">0</div>
+        </div>
+        <div class="tb-group">
+          <div class="tb-label">Pending Dues</div>
+          <div class="tb-val" id="todayPending" style="color:#f87171;">₹0</div>
+        </div>
+        <div class="tb-group">
+          <div class="tb-label">Monthly Target</div>
+          <div id="targetPct" style="font-size:15px;font-weight:700;">0%</div>
+          <div class="progress-bar-wrap" style="width:120px;background:rgba(255,255,255,0.2);">
+            <div class="progress-bar-fill green" id="targetBar" style="width:0%"></div>
+          </div>
+        </div>
+        <div style="margin-left:auto;">
+          <a href="./invoices/create.html" class="btn-custom" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);">
+            <i class="bi bi-plus-lg"></i> New Invoice
+          </a>
+        </div>
+      </div>
+
+      <!-- Stat Cards Row 1 -->
+      <div class="row g-3 mb-3" id="statCards1"></div>
+      <!-- Stat Cards Row 2 -->
+      <div class="row g-3 mb-4" id="statCards2"></div>
+
+      <!-- Quick Add + Shortcuts -->
+      <div class="row g-3 mb-4">
+        <div class="col-lg-4">
+          <div class="card h-100">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-lightning"></i> Quick Add</span>
+            </div>
+            <div class="card-body-custom">
+              <div class="quick-add-grid">
+                <a href="./invoices/create.html" class="quick-add-btn"><i class="bi bi-receipt"></i>Invoice</a>
+                <a href="./customers/add.html" class="quick-add-btn"><i class="bi bi-person-plus"></i>Customer</a>
+                <a href="./products/add.html" class="quick-add-btn"><i class="bi bi-box-seam"></i>Product</a>
+                <a href="./payments/index.html" class="quick-add-btn"><i class="bi bi-credit-card"></i>Payment</a>
+                <a href="./expenses/index.html" class="quick-add-btn"><i class="bi bi-wallet2"></i>Expense</a>
+                <a href="./quotations/create.html" class="quick-add-btn"><i class="bi bi-file-earmark-text"></i>Quote</a>
+                <a href="./suppliers/index.html" class="quick-add-btn"><i class="bi bi-truck"></i>Supplier</a>
+                <a href="./reminders/index.html" class="quick-add-btn"><i class="bi bi-bell"></i>Reminder</a>
+              </div>
+              <div style="margin-top:14px;padding:10px 12px;background:var(--card-bg2);border-radius:8px;font-size:12px;color:var(--text-muted);">
+                <i class="bi bi-keyboard me-1"></i>
+                <strong style="color:var(--text-secondary)">N</strong> Invoice &nbsp;|&nbsp;
+                <strong style="color:var(--text-secondary)">C</strong> Customer &nbsp;|&nbsp;
+                <strong style="color:var(--text-secondary)">P</strong> Product &nbsp;|&nbsp;
+                <strong style="color:var(--text-secondary)">Ctrl+K</strong> Search
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="col-lg-5">
+          <div class="card h-100">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-bar-chart-line"></i> Monthly Revenue</span>
+              <a href="./reports/index.html" class="btn-custom btn-outline-custom btn-sm">Full Report</a>
+            </div>
+            <div class="card-body-custom">
+              <div class="chart-container" style="height:210px;"><canvas id="revenueChart"></canvas></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <div class="card h-100">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-pie-chart"></i> Invoice Status</span>
+            </div>
+            <div class="card-body-custom d-flex flex-column align-items-center justify-content-center">
+              <div class="chart-container" style="height:160px;width:160px;"><canvas id="statusChart"></canvas></div>
+              <div id="statusLegend" style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;font-size:11.5px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle Row: Recent Invoices + Top Customers + Low Stock -->
+      <div class="row g-3 mb-4">
+        <div class="col-lg-5">
+          <div class="card h-100">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-receipt"></i> Recent Invoices</span>
+              <a href="./invoices/index.html" class="btn-custom btn-outline-custom btn-sm">View All</a>
+            </div>
+            <div class="table-wrapper">
+              <table class="table-custom">
+                <thead><tr><th>#</th><th>Customer</th><th>Amount</th><th>Status</th></tr></thead>
+                <tbody id="recentInvoicesBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="card h-100">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-trophy"></i> Top Customers</span>
+              <a href="./customers/index.html" class="btn-custom btn-outline-custom btn-sm">All</a>
+            </div>
+            <div class="card-body-custom p-0"><ul id="topCustomers" style="padding:0;"></ul></div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="card h-100">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-exclamation-triangle" style="color:var(--warning);"></i> Low Stock</span>
+              <a href="./products/index.html" class="btn-custom btn-outline-custom btn-sm">All</a>
+            </div>
+            <div class="card-body-custom p-0" id="lowStockList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Row: Pending + Activity + Reminders -->
+      <div class="row g-3 mb-4">
+        <div class="col-lg-5">
+          <div class="card">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-exclamation-circle" style="color:var(--danger);"></i> Pending / Overdue</span>
+              <a href="./payments/index.html" class="btn-custom btn-outline-custom btn-sm">Manage</a>
+            </div>
+            <div class="table-wrapper">
+              <table class="table-custom">
+                <thead><tr><th>#</th><th>Customer</th><th>Due</th><th>Status</th><th></th></tr></thead>
+                <tbody id="pendingBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-clock-history"></i> Recent Activity</span>
+              <a href="./activity/index.html" class="btn-custom btn-outline-custom btn-sm">All</a>
+            </div>
+            <div class="table-wrapper">
+              <table class="table-custom">
+                <thead><tr><th>Action</th><th>When</th></tr></thead>
+                <tbody id="activityBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="card">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-bell" style="color:var(--orange);"></i> Reminders</span>
+              <a href="./reminders/index.html" class="btn-custom btn-outline-custom btn-sm">All</a>
+            </div>
+            <div class="card-body-custom p-0" id="remindersList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expense Breakdown + Top Products -->
+      <div class="row g-3 mb-4">
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-pie-chart-fill" style="color:var(--danger);"></i> Expense Breakdown</span>
+            </div>
+            <div class="card-body-custom d-flex flex-column align-items-center">
+              <div class="chart-container" style="height:160px;width:160px;"><canvas id="expenseChart"></canvas></div>
+              <div id="expenseLegend" style="margin-top:12px;width:100%;font-size:12px;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-star" style="color:var(--warning);"></i> Top Products by Sales</span>
+            </div>
+            <div class="card-body-custom p-0" id="topProductsList"></div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-graph-up-arrow" style="color:var(--success);"></i> P&L Summary</span>
+              <a href="./reports/index.html" class="btn-custom btn-outline-custom btn-sm">Details</a>
+            </div>
+            <div class="card-body-custom" id="plSummary"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="./assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = './login.html'; return; }
+  document.getElementById('collapseBtn').onclick = () => { document.querySelector('.sidebar').classList.toggle('collapsed'); document.querySelector('.main-content').classList.toggle('expanded'); };
+
+  const invoices  = Store.get('invoices', []);
+  const customers = Store.get('customers', []);
+  const products  = Store.get('products', []);
+  const payments  = Store.get('payments', []);
+  const expenses  = Store.get('expenses', []);
+  const activity  = Store.get('activity', []);
+  const reminders = Store.get('reminders', []);
+  const settings  = Store.get('settings', {});
+  const expCats   = Store.get('expense_categories', []);
+
+  /* ── Live Clock ── */
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('liveClock').textContent =
+      now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+    document.getElementById('liveDate').textContent =
+      now.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+  }
+  updateClock(); setInterval(updateClock, 1000);
+
+  /* ── Greeting ── */
+  const h = new Date().getHours();
+  const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('greetMsg').textContent = `${greet}, ${(settings.ownerName||'Admin').split(' ')[0]}! Here's your business overview.`;
+
+  /* ── Reminder badge ── */
+  const pendingRem = reminders.filter(r => !r.done).length;
+  const badge = document.getElementById('reminderBadge');
+  if (badge && pendingRem > 0) { badge.textContent = pendingRem; badge.style.display = 'inline'; }
+
+  /* ── Calculations ── */
+  const todayStr    = new Date().toISOString().split('T')[0];
+  const totalRev    = invoices.reduce((s,i) => s + i.total, 0);
+  const totalPaid   = invoices.reduce((s,i) => s + i.paid, 0);
+  const totalDue    = invoices.filter(i => i.status !== 'Paid').reduce((s,i) => s + (i.total - i.paid), 0);
+  const totalExp    = expenses.reduce((s,e) => s + e.amount, 0);
+  const netProfit   = totalPaid - totalExp;
+  const paidCount   = invoices.filter(i => i.status === 'Paid').length;
+  const unpaidCount = invoices.filter(i => i.status === 'Unpaid').length;
+  const partialCount= invoices.filter(i => i.status === 'Partial').length;
+  const lowStock    = products.filter(p => p.stock <= p.minStock);
+  const todayPay    = payments.filter(p => p.date === todayStr).reduce((s,p) => s + p.amount, 0);
+  const todayInvs   = invoices.filter(i => i.date === todayStr).length;
+  const target      = settings.monthlyTarget || 50000;
+  const targetPct   = Math.min(100, Math.round((totalPaid / target) * 100));
+
+  /* ── Today Banner ── */
+  document.getElementById('todayCollection').textContent = Utils.currency(todayPay);
+  document.getElementById('todayInvoices').textContent   = todayInvs;
+  document.getElementById('todayPending').textContent    = Utils.currency(totalDue);
+  document.getElementById('targetPct').textContent       = targetPct + '%';
+  setTimeout(() => { document.getElementById('targetBar').style.width = targetPct + '%'; }, 300);
+
+  /* ── Stat Cards ── */
+  const stats1 = [
+    { icon:'bi-currency-rupee', label:'Total Revenue',    value:Utils.currency(totalRev),   cls:'grad-blue',   link:'./invoices/index.html' },
+    { icon:'bi-check-circle',   label:'Total Collected',  value:Utils.currency(totalPaid),  cls:'grad-green',  link:'./payments/index.html' },
+    { icon:'bi-hourglass-split',label:'Pending Dues',     value:Utils.currency(totalDue),   cls:'grad-red',    link:'./payments/index.html' },
+    { icon:'bi-graph-up-arrow', label:'Net Profit',       value:Utils.currency(netProfit),  cls:'grad-purple', link:'./reports/index.html' },
+  ];
+  const stats2 = [
+    { icon:'bi-people',              label:'Total Customers', value:customers.length,  cls:'grad-teal',   link:'./customers/index.html' },
+    { icon:'bi-box-seam',            label:'Total Products',  value:products.length,   cls:'grad-orange', link:'./products/index.html' },
+    { icon:'bi-receipt',             label:'Total Invoices',  value:invoices.length,   cls:'grad-pink',   link:'./invoices/index.html' },
+    { icon:'bi-exclamation-triangle',label:'Low Stock Items', value:lowStock.length,   cls:'grad-yellow', link:'./products/index.html' },
+  ];
+
+  function renderStats(stats, id) {
+    document.getElementById(id).innerHTML = stats.map(s => `
+      <div class="col-6 col-lg-3">
+        <a href="${s.link}" style="text-decoration:none;">
+          <div class="stat-card">
+            <div class="stat-icon ${s.cls}"><i class="bi ${s.icon}"></i></div>
+            <div class="stat-info">
+              <div class="stat-value">${s.value}</div>
+              <div class="stat-label">${s.label}</div>
+            </div>
+          </div>
+        </a>
+      </div>`).join('');
+  }
+  renderStats(stats1, 'statCards1');
+  renderStats(stats2, 'statCards2');
+
+  /* ── Charts ── */
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const gridColor  = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+  const labelColor = isDark ? '#94a3b8' : '#64748b';
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const monthlyRev = new Array(12).fill(0);
+  const monthlyExp = new Array(12).fill(0);
+  invoices.forEach(inv => { const m = new Date(inv.date).getMonth(); if (!isNaN(m)) monthlyRev[m] += inv.paid; });
+  expenses.forEach(exp => { const m = new Date(exp.date).getMonth(); if (!isNaN(m)) monthlyExp[m] += exp.amount; });
+
+  new Chart(document.getElementById('revenueChart'), {
+    type: 'bar',
+    data: { labels: months, datasets: [
+      { label:'Revenue', data:monthlyRev, backgroundColor:'rgba(99,102,241,0.8)', borderRadius:6, borderSkipped:false },
+      { label:'Expenses',data:monthlyExp, backgroundColor:'rgba(239,68,68,0.65)', borderRadius:6, borderSkipped:false },
+    ]},
+    options: { responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ labels:{ color:labelColor, font:{size:12} } } },
+      scales:{ x:{grid:{color:gridColor},ticks:{color:labelColor}}, y:{grid:{color:gridColor},ticks:{color:labelColor,callback:v=>'₹'+(v/1000).toFixed(0)+'k'}} }
+    }
+  });
+
+  new Chart(document.getElementById('statusChart'), {
+    type:'doughnut',
+    data:{ labels:['Paid','Unpaid','Partial'],
+      datasets:[{ data:[paidCount,unpaidCount,partialCount], backgroundColor:['#10b981','#ef4444','#f59e0b'], borderWidth:0, hoverOffset:6 }]
+    },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'70%' }
+  });
+  document.getElementById('statusLegend').innerHTML = [
+    {label:'Paid',color:'#10b981',count:paidCount},
+    {label:'Unpaid',color:'#ef4444',count:unpaidCount},
+    {label:'Partial',color:'#f59e0b',count:partialCount},
+  ].map(l=>`<span style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:${l.color};flex-shrink:0;"></span>${l.label} (${l.count})</span>`).join('');
+
+  /* ── Expense Donut ── */
+  const expByCategory = {};
+  expenses.forEach(e => { expByCategory[e.category] = (expByCategory[e.category]||0) + e.amount; });
+  const expLabels = [], expVals = [], expColors = [];
+  Object.entries(expByCategory).forEach(([catId, amt]) => {
+    const cat = expCats.find(c => c.id === catId);
+    expLabels.push(cat?.name || catId); expVals.push(amt); expColors.push(cat?.color || '#64748b');
+  });
+  if (expVals.length) {
+    new Chart(document.getElementById('expenseChart'), {
+      type:'doughnut',
+      data:{ labels:expLabels, datasets:[{ data:expVals, backgroundColor:expColors, borderWidth:0, hoverOffset:4 }] },
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'65%' }
+    });
+    document.getElementById('expenseLegend').innerHTML = expLabels.map((l,i)=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;font-size:12px;">
+        <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:3px;background:${expColors[i]};flex-shrink:0;"></span>${l}</span>
+        <span style="font-weight:600;color:var(--text-primary);">${Utils.currency(expVals[i])}</span>
+      </div>`).join('');
+  } else {
+    document.getElementById('expenseChart').parentElement.innerHTML = '<div class="empty-state" style="padding:30px;"><i class="bi bi-pie-chart"></i><p>No expenses yet</p></div>';
+  }
+
+  /* ── Recent Invoices ── */
+  const recent = [...invoices].reverse().slice(0,6);
+  document.getElementById('recentInvoicesBody').innerHTML = recent.map(inv=>`
+    <tr>
+      <td><a href="./invoices/view.html?id=${inv.id}" style="color:var(--primary);font-weight:600;">${inv.id}</a></td>
+      <td>${inv.customerName}</td>
+      <td class="fw-bold">${Utils.currency(inv.total)}</td>
+      <td>${Utils.statusBadge(Utils.isOverdue(inv.dueDate,inv.status)?'Overdue':inv.status)}</td>
+    </tr>`).join('') || '<tr><td colspan="4" class="text-center" style="padding:20px;color:var(--text-muted);">No invoices yet</td></tr>';
+
+  /* ── Top Customers (by paid invoices) ── */
+  const custTotals = {};
+  invoices.forEach(inv => { custTotals[inv.customerId] = (custTotals[inv.customerId]||0) + inv.paid; });
+  const custSorted = customers.map(c => ({...c, totalPaid: custTotals[c.id]||0}))
+    .sort((a,b) => b.totalPaid - a.totalPaid).slice(0,5);
+  const gradArr = ['grad-blue','grad-green','grad-orange','grad-purple','grad-teal'];
+  document.getElementById('topCustomers').innerHTML = custSorted.length ? custSorted.map((c,i)=>`
+    <li style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--card-border);">
+      <span style="width:26px;height:26px;border-radius:50%;background:var(--${gradArr[i]});display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;">${i+1}</span>
+      <a href="./customers/view.html?id=${c.id}" style="flex:1;min-width:0;text-decoration:none;">
+        <div style="font-size:13px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.name}</div>
+        <div style="font-size:11px;color:var(--text-muted);">${Utils.currency(c.totalPaid)}</div>
+      </a>
+    </li>`).join('') : '<li style="padding:20px;color:var(--text-muted);font-size:13px;">No customers yet</li>';
+
+  /* ── Low Stock ── */
+  const lowList = products.filter(p => p.stock <= p.minStock).slice(0,5);
+  document.getElementById('lowStockList').innerHTML = lowList.length
+    ? lowList.map(p=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-bottom:1px solid var(--card-border);">
+        <span style="font-size:13px;font-weight:500;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</span>
+        <span class="badge-custom ${p.stock===0?'badge-danger':'badge-warning'}" style="margin-left:8px;flex-shrink:0;">${p.stock} left</span>
+      </div>`).join('')
+    : '<div class="empty-state" style="padding:30px 20px;"><i class="bi bi-check-circle"></i><p>All stocked up!</p></div>';
+
+  /* ── Pending / Overdue ── */
+  const pending = invoices.filter(i => i.status !== 'Paid');
+  document.getElementById('pendingBody').innerHTML = pending.map(inv=>{
+    const overdue = Utils.isOverdue(inv.dueDate, inv.status);
+    return `<tr>
+      <td><a href="./invoices/view.html?id=${inv.id}" style="color:var(--primary);font-weight:600;">${inv.id}</a></td>
+      <td>${inv.customerName}</td>
+      <td class="fw-bold" style="color:var(--danger);">${Utils.currency(inv.total - inv.paid)}</td>
+      <td>${Utils.statusBadge(overdue?'Overdue':inv.status)}</td>
+      <td><button onclick="openQuickPay('${inv.id}')" class="btn-icon" title="Quick Pay"><i class="bi bi-credit-card"></i></button></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="5"><div class="empty-state" style="padding:20px;"><i class="bi bi-check-circle"></i><p>No pending!</p></div></td></tr>';
+
+  /* ── Activity ── */
+  document.getElementById('activityBody').innerHTML = activity.slice(0,8).map(a=>`
+    <tr>
+      <td style="font-size:12.5px;">${a.action}</td>
+      <td style="white-space:nowrap;color:var(--text-muted);font-size:11px;">${a.date}</td>
+    </tr>`).join('') || '<tr><td colspan="2" class="text-center" style="padding:16px;color:var(--text-muted);">No activity yet</td></tr>';
+
+  /* ── Reminders ── */
+  const pendingReminders = reminders.filter(r => !r.done).slice(0,4);
+  document.getElementById('remindersList').innerHTML = pendingReminders.length
+    ? pendingReminders.map(r=>`
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 20px;border-bottom:1px solid var(--card-border);">
+        <span class="badge-custom ${r.priority==='High'?'badge-danger':r.priority==='Medium'?'badge-warning':'badge-info'}" style="flex-shrink:0;margin-top:2px;">${r.priority}</span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12.5px;font-weight:600;color:var(--text-primary);">${r.title}</div>
+          <div style="font-size:11px;color:var(--text-muted);">${Utils.formatDate(r.date)}</div>
+        </div>
+      </div>`).join('')
+    : '<div class="empty-state" style="padding:30px 20px;"><i class="bi bi-bell-slash"></i><p>No pending reminders</p></div>';
+
+  /* ── Top Products (by line items in invoices) ── */
+  const prodSales = {};
+  invoices.forEach(inv => inv.items && inv.items.forEach(item => {
+    prodSales[item.product] = (prodSales[item.product]||0) + (item.total||0);
+  }));
+  const topProds = Object.entries(prodSales).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  document.getElementById('topProductsList').innerHTML = topProds.length
+    ? topProds.map((p,i)=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--card-border);">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="width:22px;height:22px;border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;">${i+1}</span>
+          <span style="font-size:13px;font-weight:500;color:var(--text-primary);">${p[0]}</span>
+        </div>
+        <span style="font-weight:700;color:var(--primary);font-size:13px;">${Utils.currency(p[1])}</span>
+      </div>`).join('')
+    : '<div class="empty-state" style="padding:30px 20px;"><i class="bi bi-box-seam"></i><p>No sales yet</p></div>';
+
+  /* ── P&L Summary ── */
+  const margin = totalPaid > 0 ? ((netProfit/totalPaid)*100).toFixed(1) : '0.0';
+  document.getElementById('plSummary').innerHTML = `
+    <div class="summary-row"><span class="sr-label">Total Revenue</span><span class="sr-val" style="color:var(--primary);">${Utils.currency(totalRev)}</span></div>
+    <div class="summary-row"><span class="sr-label">Amount Collected</span><span class="sr-val" style="color:var(--success);">${Utils.currency(totalPaid)}</span></div>
+    <div class="summary-row"><span class="sr-label">Total Expenses</span><span class="sr-val" style="color:var(--danger);">${Utils.currency(totalExp)}</span></div>
+    <div class="summary-row"><span class="sr-label">Outstanding Dues</span><span class="sr-val" style="color:var(--warning);">${Utils.currency(totalDue)}</span></div>
+    <div class="summary-row highlight"><span class="sr-label">Net Profit</span><span class="sr-val">${Utils.currency(netProfit)}</span></div>
+    <div style="margin-top:10px;font-size:12px;color:var(--text-muted);">Profit margin: <strong style="color:var(--primary);">${margin}%</strong></div>`;
+});
+</script>
+</body>
+</html>

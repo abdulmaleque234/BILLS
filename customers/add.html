@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Customer — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div><button class="sidebar-collapse-btn" id="collapseBtn"><i class="bi bi-chevron-left"></i></button></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link active"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../quotations/index.html" class="nav-link"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../purchase-orders/index.html" class="nav-link"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="../backup/index.html" class="nav-link"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v2.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar"><button id="sidebarToggle"><i class="bi bi-list"></i></button></header>
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Dashboard</a><i class="bi bi-chevron-right"></i><a href="./index.html">Customers</a><i class="bi bi-chevron-right"></i><span>Add Customer</span></div>
+          <h1 class="page-title">Add New Customer</h1>
+          <p class="page-subtitle">Create a new customer profile</p>
+        </div>
+        <a href="./index.html" class="btn-custom btn-outline-custom"><i class="bi bi-arrow-left"></i> Back to Customers</a>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-person-plus"></i> Customer Information</span></div>
+            <div class="card-body-custom">
+              <form id="addCustomerForm" onsubmit="saveCustomer(event)">
+                <div class="form-row form-row-2 mb-3">
+                  <div><label class="form-label-custom">Full Name <span class="text-danger">*</span></label>
+                    <input type="text" id="cName" class="form-control-custom" placeholder="e.g. Rahul Sharma" required autofocus></div>
+                  <div><label class="form-label-custom">Phone Number <span class="text-danger">*</span></label>
+                    <input type="tel" id="cPhone" class="form-control-custom" placeholder="10-digit mobile number" maxlength="10" required></div>
+                </div>
+                <div class="form-row form-row-2 mb-3">
+                  <div><label class="form-label-custom">Email Address</label>
+                    <input type="email" id="cEmail" class="form-control-custom" placeholder="customer@email.com"></div>
+                  <div><label class="form-label-custom">Opening Balance (₹)</label>
+                    <input type="number" id="cBalance" class="form-control-custom" placeholder="0" min="0" value="0"></div>
+                </div>
+                <div class="form-row form-row-2 mb-3">
+                  <div><label class="form-label-custom">Credit Limit (₹)</label>
+                    <input type="number" id="cCreditLimit" class="form-control-custom" placeholder="0" min="0" value="0"></div>
+                  <div><label class="form-label-custom">GSTIN (Optional)</label>
+                    <input type="text" id="cGst" class="form-control-custom" placeholder="GST Number"></div>
+                </div>
+                <div class="mb-3"><label class="form-label-custom">Address</label>
+                  <textarea id="cAddress" class="form-control-custom" rows="3" placeholder="Full address..."></textarea></div>
+                <div class="mb-4"><label class="form-label-custom">Notes</label>
+                  <textarea id="cNotes" class="form-control-custom" rows="2" placeholder="Any additional notes..."></textarea></div>
+                <div class="d-flex gap-3">
+                  <button type="submit" class="btn-custom btn-primary-custom"><i class="bi bi-save"></i> Save Customer</button>
+                  <button type="reset" class="btn-custom btn-outline-custom"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-info-circle"></i> Tips</span></div>
+            <div class="card-body-custom" style="font-size:13px;color:var(--text-secondary);line-height:1.9;">
+              <p><i class="bi bi-check2 text-success me-2"></i>Enter a valid 10-digit mobile number.</p>
+              <p><i class="bi bi-check2 text-success me-2"></i>Opening balance is for pre-existing dues.</p>
+              <p><i class="bi bi-check2 text-success me-2"></i>Credit limit controls invoice approval.</p>
+              <p><i class="bi bi-check2 text-success me-2"></i>Email is optional but useful for records.</p>
+              <p><i class="bi bi-check2 text-success me-2"></i>Customer ID will be auto-generated.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+  document.getElementById('collapseBtn').onclick = () => { document.querySelector('.sidebar').classList.toggle('collapsed'); document.querySelector('.main-content').classList.toggle('expanded'); };
+
+  // Pre-fill edit mode if ?id= is present
+  const params = new URLSearchParams(window.location.search);
+  const editId = params.get('id');
+  if (editId) {
+    const c = Store.get('customers', []).find(x => x.id === editId);
+    if (c) {
+      document.querySelector('h1').textContent = 'Edit Customer';
+      document.querySelector('[type=submit]').innerHTML = '<i class="bi bi-save"></i> Update Customer';
+      document.getElementById('cName').value = c.name;
+      document.getElementById('cPhone').value = c.phone;
+      document.getElementById('cEmail').value = c.email || '';
+      document.getElementById('cBalance').value = c.balance || 0;
+      document.getElementById('cCreditLimit').value = c.creditLimit || 0;
+      document.getElementById('cGst').value = c.gstin || '';
+      document.getElementById('cAddress').value = c.address || '';
+      document.getElementById('cNotes').value = c.notes || '';
+      document.getElementById('addCustomerForm').dataset.editId = editId;
+    }
+  }
+});
+
+function saveCustomer(e) {
+  e.preventDefault();
+  const editId = document.getElementById('addCustomerForm').dataset.editId;
+  const customers = Store.get('customers', []);
+  const customer = {
+    id: editId || Utils.generateId('C', customers),
+    name: document.getElementById('cName').value.trim(),
+    phone: document.getElementById('cPhone').value.trim(),
+    email: document.getElementById('cEmail').value.trim(),
+    address: document.getElementById('cAddress').value.trim(),
+    notes: document.getElementById('cNotes').value.trim(),
+    balance: parseFloat(document.getElementById('cBalance').value) || 0,
+    creditLimit: parseFloat(document.getElementById('cCreditLimit').value) || 0,
+    gstin: document.getElementById('cGst').value.trim(),
+    totalPurchase: 0,
+    created: editId ? undefined : Utils.today()
+  };
+  if (editId) {
+    const idx = customers.findIndex(c => c.id === editId);
+    if (idx > -1) {
+      customer.created = customers[idx].created;
+      customer.totalPurchase = customers[idx].totalPurchase || 0;
+      customers[idx] = customer;
+      ActivityLog.push(`Updated customer: ${customer.name}`);
+      Utils.toast('Customer updated!');
+    }
+  } else {
+    customers.push(customer);
+    ActivityLog.push(`Added customer: ${customer.name}`);
+    Utils.toast('Customer added!');
+  }
+  Store.set('customers', customers);
+  setTimeout(() => window.location.href = './index.html', 800);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Purchase Orders — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div><button class="sidebar-collapse-btn" id="collapseBtn"><i class="bi bi-chevron-left"></i></button></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../quotations/index.html" class="nav-link"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../purchase-orders/index.html" class="nav-link active"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="../backup/index.html" class="nav-link"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v2.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar"><button id="sidebarToggle"><i class="bi bi-list"></i></button></header>
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Dashboard</a><i class="bi bi-chevron-right"></i><span>Purchase Orders</span></div>
+          <h1 class="page-title">Purchase Orders</h1>
+          <p class="page-subtitle">Track orders placed with your suppliers</p>
+        </div>
+        <button class="btn-custom btn-primary-custom" onclick="openAdd()"><i class="bi bi-plus-lg"></i> New Purchase Order</button>
+      </div>
+
+      <div class="row g-3 mb-4" id="poStats"></div>
+
+      <div class="card">
+        <div class="card-header-custom">
+          <span class="card-title-custom"><i class="bi bi-cart-check"></i> All Purchase Orders</span>
+          <div style="display:flex;gap:8px;">
+            <div class="filter-tabs" id="filterTabs">
+              <button class="filter-tab active" data-filter="All">All</button>
+              <button class="filter-tab" data-filter="Pending">Pending</button>
+              <button class="filter-tab" data-filter="Partial">Partial</button>
+              <button class="filter-tab" data-filter="Received">Received</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="table-custom">
+            <thead><tr><th>PO #</th><th>Supplier</th><th>Date</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="poBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal-overlay" id="poModal">
+  <div class="modal-box" style="max-width:540px;">
+    <h3 class="modal-title"><i class="bi bi-cart-check me-2"></i>New Purchase Order</h3>
+    <div style="display:grid;gap:12px;">
+      <div><label class="form-label-custom">Supplier *</label>
+        <select id="poSupplier" class="form-control-custom"><option value="">— Select Supplier —</option></select>
+      </div>
+      <div class="form-row form-row-2">
+        <div><label class="form-label-custom">Order Date</label><input type="date" id="poDate" class="form-control-custom"></div>
+        <div><label class="form-label-custom">Due Date</label><input type="date" id="poDue" class="form-control-custom"></div>
+      </div>
+      <div><label class="form-label-custom">Total Amount (₹) *</label><input type="number" id="poTotal" class="form-control-custom" placeholder="0"></div>
+      <div><label class="form-label-custom">Amount Paid (₹)</label><input type="number" id="poPaid" class="form-control-custom" placeholder="0" value="0"></div>
+      <div><label class="form-label-custom">Notes</label><textarea id="poNotes" class="form-control-custom" placeholder="Optional notes..."></textarea></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button onclick="savePO()" class="btn-custom btn-primary-custom" style="flex:1;"><i class="bi bi-check-lg"></i> Create PO</button>
+      <button onclick="closeModal()" class="btn-custom btn-outline-custom">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+let currentFilter = 'All';
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+  renderPage();
+  document.getElementById('collapseBtn').onclick = () => { document.querySelector('.sidebar').classList.toggle('collapsed'); document.querySelector('.main-content').classList.toggle('expanded'); };
+  document.querySelectorAll('.filter-tab').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active'); currentFilter = this.dataset.filter; renderTable();
+    });
+  });
+  // Populate supplier dropdown
+  const sel = document.getElementById('poSupplier');
+  Store.get('suppliers',[]).forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=s.name;sel.appendChild(o);});
+  document.getElementById('poDate').value=Utils.today();
+});
+function renderPage() {
+  const pos=Store.get('purchase_orders',[]);
+  const totalVal=pos.reduce((s,p)=>s+p.total,0);
+  const totalBal=pos.filter(p=>p.status!=='Received').reduce((s,p)=>s+(p.total-p.paid),0);
+  document.getElementById('poStats').innerHTML=`
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-blue"><i class="bi bi-cart-check"></i></div><div class="stat-info"><div class="stat-value">${pos.length}</div><div class="stat-label">Total POs</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-orange"><i class="bi bi-currency-rupee"></i></div><div class="stat-info"><div class="stat-value">${Utils.currency(totalVal)}</div><div class="stat-label">Total Value</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-red"><i class="bi bi-hourglass-split"></i></div><div class="stat-info"><div class="stat-value">${Utils.currency(totalBal)}</div><div class="stat-label">Balance Pending</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-yellow"><i class="bi bi-clock"></i></div><div class="stat-info"><div class="stat-value">${pos.filter(p=>p.status==='Pending').length}</div><div class="stat-label">Open Orders</div></div></div></div>`;
+  renderTable();
+}
+function renderTable() {
+  const pos=Store.get('purchase_orders',[]);
+  const filtered=currentFilter==='All'?pos:pos.filter(p=>p.status===currentFilter);
+  document.getElementById('poBody').innerHTML=filtered.length?filtered.map(p=>`
+    <tr>
+      <td class="fw-bold text-primary-color">${p.id}</td>
+      <td>${p.supplierName}</td>
+      <td class="text-sm text-muted-c">${Utils.formatDate(p.date)}</td>
+      <td class="fw-bold">${Utils.currency(p.total)}</td>
+      <td class="fw-semibold" style="color:var(--success);">${Utils.currency(p.paid)}</td>
+      <td class="fw-bold" style="color:var(${p.total-p.paid>0?'--danger':'--success'});">${Utils.currency(p.total-p.paid)}</td>
+      <td>${Utils.statusBadge(p.status)}</td>
+      <td>
+        ${p.status!=='Received'?`<button onclick="markReceived('${p.id}')" class="btn-icon btn-view" title="Mark Received"><i class="bi bi-check-circle"></i></button>`:''}
+        <button onclick="deletePO('${p.id}')" class="btn-icon btn-del" title="Delete"><i class="bi bi-trash"></i></button>
+      </td>
+    </tr>`).join(''):'<tr><td colspan="8"><div class="empty-state"><i class="bi bi-cart-check"></i><h3>No purchase orders</h3></div></td></tr>';
+}
+function openAdd(){document.getElementById('poModal').classList.add('show');}
+function savePO(){
+  const supId=document.getElementById('poSupplier').value; if(!supId){Utils.toast('Select supplier','error');return;}
+  const sup=Store.get('suppliers',[]).find(s=>s.id===supId);
+  const total=parseFloat(document.getElementById('poTotal').value)||0; if(!total){Utils.toast('Enter total amount','error');return;}
+  const paid=parseFloat(document.getElementById('poPaid').value)||0;
+  const pos=Store.get('purchase_orders',[]);
+  const status=paid>=total?'Received':paid>0?'Partial':'Pending';
+  pos.push({id:Utils.generateId('PO-',pos),supplier:supId,supplierName:sup.name,date:document.getElementById('poDate').value,dueDate:document.getElementById('poDue').value,items:[],total,paid,status,notes:document.getElementById('poNotes').value});
+  Store.set('purchase_orders',pos);ActivityLog.push(`Created PO for ${sup.name} ₹${total}`);closeModal();renderPage();Utils.toast('Purchase order created!');
+}
+function markReceived(id){
+  const pos=Store.get('purchase_orders',[]),p=pos.find(x=>x.id===id);if(!p)return;
+  p.status='Received';p.paid=p.total;Store.set('purchase_orders',pos);ActivityLog.push(`PO ${id} marked as received`);renderTable();Utils.toast('Marked as received!');
+}
+function deletePO(id){
+  if(!confirmDelete('Delete this purchase order?'))return;
+  Store.set('purchase_orders',Store.get('purchase_orders',[]).filter(p=>p.id!==id));renderPage();Utils.toast('Deleted.','warning');
+}
+function closeModal(){document.getElementById('poModal').classList.remove('show');}
+document.getElementById('poModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+</script>
+</body>
+</html>

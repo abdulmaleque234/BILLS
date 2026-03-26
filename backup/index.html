@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backup & Export — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div><button class="sidebar-collapse-btn" id="collapseBtn"><i class="bi bi-chevron-left"></i></button></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../quotations/index.html" class="nav-link"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../purchase-orders/index.html" class="nav-link"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="../backup/index.html" class="nav-link active"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v2.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar"><button id="sidebarToggle"><i class="bi bi-list"></i></button></header>
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Dashboard</a><i class="bi bi-chevron-right"></i><span>Backup & Export</span></div>
+          <h1 class="page-title">Backup & Export</h1>
+          <p class="page-subtitle">Download or restore all your billing data</p>
+        </div>
+      </div>
+
+      <div class="info-box warning mb-4"><i class="bi bi-exclamation-triangle"></i><span>All data is stored in your browser's localStorage. <strong>Always backup regularly</strong> — clearing browser data will erase all records!</span></div>
+
+      <div class="row g-4">
+        <!-- Export -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-cloud-arrow-down"></i> Export / Backup</span></div>
+            <div class="card-body-custom">
+              <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;">Download a complete backup of all your data as a JSON file. You can restore this file later.</p>
+              <div id="dataStats" class="row g-2 mb-4"></div>
+              <button onclick="Store.export(); ActivityLog.push('Data exported'); Utils.toast('Backup downloaded!', 'success');" class="btn-custom btn-primary-custom" style="width:100%;justify-content:center;">
+                <i class="bi bi-download"></i> Download Backup (JSON)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Import -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-cloud-arrow-up"></i> Import / Restore</span></div>
+            <div class="card-body-custom">
+              <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;">Select a previously exported JSON backup file to restore your data. <strong>This will overwrite existing data.</strong></p>
+              <div class="info-box danger mb-3" style="font-size:12.5px;"><i class="bi bi-exclamation-octagon"></i><span>Warning: Importing will replace all current data!</span></div>
+              <label class="form-label-custom">Select Backup File</label>
+              <input type="file" id="importFile" accept=".json" class="form-control-custom" style="margin-bottom:12px;">
+              <button onclick="importData()" class="btn-custom btn-warning-custom" style="width:100%;justify-content:center;">
+                <i class="bi bi-upload"></i> Restore from Backup
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reset -->
+        <div class="col-md-6">
+          <div class="card" style="border-color:var(--danger-light);">
+            <div class="card-header-custom"><span class="card-title-custom" style="color:var(--danger);"><i class="bi bi-trash3"></i> Reset All Data</span></div>
+            <div class="card-body-custom">
+              <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;">Clear all billing data and restore to factory demo data. This cannot be undone.</p>
+              <button onclick="resetData()" class="btn-custom btn-danger-custom" style="width:100%;justify-content:center;">
+                <i class="bi bi-arrow-counterclockwise"></i> Reset to Demo Data
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Storage Info -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-hdd"></i> Storage Usage</span></div>
+            <div class="card-body-custom" id="storageInfo"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+  renderStats();
+  document.getElementById('collapseBtn').onclick = () => { document.querySelector('.sidebar').classList.toggle('collapsed'); document.querySelector('.main-content').classList.toggle('expanded'); };
+});
+
+function renderStats() {
+  const data = Store.getAll();
+  const items = [
+    { label:'Customers', icon:'bi-people', key:'customers' },
+    { label:'Products',  icon:'bi-box-seam', key:'products' },
+    { label:'Invoices',  icon:'bi-receipt', key:'invoices' },
+    { label:'Payments',  icon:'bi-credit-card', key:'payments' },
+    { label:'Expenses',  icon:'bi-wallet2', key:'expenses' },
+    { label:'Suppliers', icon:'bi-truck', key:'suppliers' },
+  ];
+  document.getElementById('dataStats').innerHTML = items.map(i => `
+    <div class="col-6"><div style="background:var(--card-bg2);border:1px solid var(--card-border);border-radius:8px;padding:10px;display:flex;align-items:center;gap:10px;">
+      <i class="bi ${i.icon}" style="font-size:18px;color:var(--primary);"></i>
+      <div><div class="fw-bold">${(data[i.key]||[]).length}</div><div class="text-sm text-muted-c">${i.label}</div></div>
+    </div></div>`).join('');
+
+  // Storage usage
+  let totalSize = 0;
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith('bills_')) {
+      totalSize += (localStorage.getItem(k) || '').length;
+    }
+  }
+  const kb = (totalSize / 1024).toFixed(2);
+  const pct = Math.min((totalSize / (5 * 1024 * 1024)) * 100, 100).toFixed(1);
+  document.getElementById('storageInfo').innerHTML = `
+    <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;"><span>Used: <strong>${kb} KB</strong></span><span>Limit: ~5 MB</span></div>
+    <div style="height:10px;background:var(--card-bg2);border-radius:20px;overflow:hidden;"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:20px;"></div></div>
+    <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">${pct}% of available localStorage used</div></div>
+    <p style="font-size:13px;color:var(--text-secondary);">Last backup: <strong>Download now to protect your data.</strong></p>`;
+}
+
+function importData() {
+  const file = document.getElementById('importFile').files[0];
+  if (!file) { Utils.toast('Please select a backup file', 'error'); return; }
+  if (!confirm('This will REPLACE all your current data. Continue?')) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const success = Store.import(e.target.result);
+    if (success) {
+      // Clear seeded flag so fresh data takes effect
+      localStorage.removeItem('bills_seeded_v2_0');
+      ActivityLog.push('Data imported from backup file');
+      Utils.toast('Data restored successfully! Reloading...', 'success');
+      setTimeout(() => window.location.href = '../index.html', 1500);
+    } else {
+      Utils.toast('Invalid backup file. Please use a valid Bills export.', 'error');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetData() {
+  if (!confirm('This will DELETE all your current data and reload fresh demo data. Are you sure?')) return;
+  if (!confirm('Second confirmation: This is irreversible. Proceed?')) return;
+  const keysToRemove = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith('bills_')) keysToRemove.push(k);
+  }
+  keysToRemove.forEach(k => localStorage.removeItem(k));
+  Utils.toast('Data reset! Reloading...', 'warning');
+  setTimeout(() => window.location.href = '../index.html', 1000);
+}
+</script>
+</body>
+</html>

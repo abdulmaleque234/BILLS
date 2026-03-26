@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Categories — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div><button class="sidebar-collapse-btn" id="collapseBtn"><i class="bi bi-chevron-left"></i></button></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link active"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../quotations/index.html" class="nav-link"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../purchase-orders/index.html" class="nav-link"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="../backup/index.html" class="nav-link"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v2.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar"><button id="sidebarToggle"><i class="bi bi-list"></i></button></header>
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Dashboard</a><i class="bi bi-chevron-right"></i><a href="../products/index.html">Products</a><i class="bi bi-chevron-right"></i><span>Categories</span></div>
+          <h1 class="page-title">Product Categories</h1>
+          <p class="page-subtitle">Manage your product categories</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <a href="../products/index.html" class="btn-custom btn-outline-custom"><i class="bi bi-arrow-left"></i> Back</a>
+          <button onclick="openAdd()" class="btn-custom btn-primary-custom"><i class="bi bi-plus-lg"></i> Add Category</button>
+        </div>
+      </div>
+
+      <div class="row g-3" id="categoriesGrid"></div>
+    </main>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="catModal">
+  <div class="modal-box" style="max-width:420px;">
+    <h3 class="modal-title" id="catModalTitle"><i class="bi bi-tags me-2"></i>Add Category</h3>
+    <div style="display:grid;gap:14px;margin-top:8px;">
+      <div><label class="form-label-custom">Category Name *</label><input type="text" id="catName" class="form-control-custom" placeholder="e.g. Mobile Accessories"></div>
+      <div>
+        <label class="form-label-custom">Icon (Bootstrap Icon class)</label>
+        <input type="text" id="catIcon" class="form-control-custom" placeholder="e.g. bi-phone">
+        <small style="color:var(--text-muted);font-size:11px;">Find icons at <a href="https://icons.getbootstrap.com" target="_blank">icons.getbootstrap.com</a></small>
+      </div>
+      <div>
+        <label class="form-label-custom">Color</label>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="color" id="catColor" value="#6366f1" style="height:38px;width:60px;border:none;border-radius:8px;cursor:pointer;padding:0;">
+          <div class="form-row" style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button type="button" onclick="setColor('#6366f1')" style="width:28px;height:28px;border-radius:50%;background:#6366f1;border:none;cursor:pointer;" title="Indigo"></button>
+            <button type="button" onclick="setColor('#10b981')" style="width:28px;height:28px;border-radius:50%;background:#10b981;border:none;cursor:pointer;" title="Green"></button>
+            <button type="button" onclick="setColor('#f59e0b')" style="width:28px;height:28px;border-radius:50%;background:#f59e0b;border:none;cursor:pointer;" title="Amber"></button>
+            <button type="button" onclick="setColor('#ef4444')" style="width:28px;height:28px;border-radius:50%;background:#ef4444;border:none;cursor:pointer;" title="Red"></button>
+            <button type="button" onclick="setColor('#8b5cf6')" style="width:28px;height:28px;border-radius:50%;background:#8b5cf6;border:none;cursor:pointer;" title="Purple"></button>
+            <button type="button" onclick="setColor('#ec4899')" style="width:28px;height:28px;border-radius:50%;background:#ec4899;border:none;cursor:pointer;" title="Pink"></button>
+            <button type="button" onclick="setColor('#14b8a6')" style="width:28px;height:28px;border-radius:50%;background:#14b8a6;border:none;cursor:pointer;" title="Teal"></button>
+            <button type="button" onclick="setColor('#f97316')" style="width:28px;height:28px;border-radius:50%;background:#f97316;border:none;cursor:pointer;" title="Orange"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button onclick="saveCat()" class="btn-custom btn-primary-custom" style="flex:1;"><i class="bi bi-check-lg"></i> <span id="catSaveBtn">Add Category</span></button>
+      <button onclick="closeModal()" class="btn-custom btn-outline-custom">Cancel</button>
+    </div>
+    <input type="hidden" id="catEditId">
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+  renderPage();
+  document.getElementById('collapseBtn').onclick = () => { document.querySelector('.sidebar').classList.toggle('collapsed'); document.querySelector('.main-content').classList.toggle('expanded'); };
+  document.getElementById('catModal').addEventListener('click', e => { if (e.target===e.currentTarget) closeModal(); });
+});
+
+function renderPage() {
+  const cats = Store.get('categories', []);
+  const products = Store.get('products', []);
+  const grid = document.getElementById('categoriesGrid');
+  if (!cats.length) {
+    grid.innerHTML = '<div class="col-12"><div class="empty-state"><i class="bi bi-tags"></i><h3>No categories yet</h3><p>Add your first product category to get organized.</p><button onclick="openAdd()" class="btn-custom btn-primary-custom mt-3"><i class="bi bi-plus-lg"></i> Add Category</button></div></div>';
+    return;
+  }
+  grid.innerHTML = cats.map(cat => {
+    const count = products.filter(p => p.category === cat.name).length;
+    return `<div class="col-6 col-md-4 col-lg-3">
+      <div class="card" style="text-align:center;padding:20px 16px;cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+        <div style="width:56px;height:56px;border-radius:16px;background:${cat.color}22;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border:2px solid ${cat.color}44;">
+          <i class="bi ${cat.icon||'bi-grid'}" style="font-size:24px;color:${cat.color};"></i>
+        </div>
+        <div style="font-weight:700;font-size:14px;color:var(--text-primary);margin-bottom:4px;">${cat.name}</div>
+        <div style="font-size:12px;color:var(--text-muted);">${count} product${count!==1?'s':''}</div>
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:14px;">
+          <button onclick="editCat('${cat.id}')" class="btn-icon btn-edit" title="Edit"><i class="bi bi-pencil"></i></button>
+          <button onclick="deleteCat('${cat.id}')" class="btn-icon btn-del" title="Delete"><i class="bi bi-trash"></i></button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setColor(c) {
+  document.getElementById('catColor').value = c;
+}
+
+function openAdd() {
+  document.getElementById('catModalTitle').innerHTML = '<i class="bi bi-tags me-2"></i>Add Category';
+  document.getElementById('catSaveBtn').textContent = 'Add Category';
+  document.getElementById('catName').value = '';
+  document.getElementById('catIcon').value = 'bi-grid';
+  document.getElementById('catColor').value = '#6366f1';
+  document.getElementById('catEditId').value = '';
+  document.getElementById('catModal').classList.add('show');
+  document.getElementById('catName').focus();
+}
+
+function editCat(id) {
+  const cat = Store.get('categories', []).find(c => c.id === id);
+  if (!cat) return;
+  document.getElementById('catModalTitle').innerHTML = '<i class="bi bi-tags me-2"></i>Edit Category';
+  document.getElementById('catSaveBtn').textContent = 'Save Changes';
+  document.getElementById('catName').value = cat.name;
+  document.getElementById('catIcon').value = cat.icon || 'bi-grid';
+  document.getElementById('catColor').value = cat.color || '#6366f1';
+  document.getElementById('catEditId').value = cat.id;
+  document.getElementById('catModal').classList.add('show');
+}
+
+function saveCat() {
+  const name = document.getElementById('catName').value.trim();
+  if (!name) { Utils.toast('Enter category name', 'error'); return; }
+  const cats = Store.get('categories', []);
+  const editId = document.getElementById('catEditId').value;
+  const cat = {
+    id: editId || Utils.generateId('CAT', cats),
+    name,
+    icon: document.getElementById('catIcon').value.trim() || 'bi-grid',
+    color: document.getElementById('catColor').value
+  };
+  if (editId) {
+    const idx = cats.findIndex(c => c.id === editId);
+    if (idx > -1) cats[idx] = cat;
+    // Also update products using old category name
+    const oldName = cats[idx]?.name;
+    if (oldName && oldName !== name) {
+      const prods = Store.get('products', []);
+      prods.forEach(p => { if (p.category === oldName) p.category = name; });
+      Store.set('products', prods);
+    }
+  } else {
+    cats.push(cat);
+  }
+  Store.set('categories', cats);
+  ActivityLog.push(`${editId?'Updated':'Added'} category: ${name}`);
+  closeModal();
+  renderPage();
+  Utils.toast(`Category "${name}" ${editId?'updated':'added'}!`);
+}
+
+function deleteCat(id) {
+  const cats = Store.get('categories', []);
+  const cat = cats.find(c => c.id === id);
+  if (!cat) return;
+  const prods = Store.get('products', []);
+  const inUse = prods.filter(p => p.category === cat.name).length;
+  if (inUse > 0 && !confirm(`This category has ${inUse} product(s). Delete anyway?`)) return;
+  Store.set('categories', cats.filter(c => c.id !== id));
+  renderPage();
+  Utils.toast(`Category deleted.`, 'warning');
+}
+
+function closeModal() { document.getElementById('catModal').classList.remove('show'); }
+</script>
+</body>
+</html>

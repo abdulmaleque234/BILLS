@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Quotation — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div><button class="sidebar-collapse-btn" id="collapseBtn"><i class="bi bi-chevron-left"></i></button></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../quotations/index.html" class="nav-link active"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../purchase-orders/index.html" class="nav-link"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="../backup/index.html" class="nav-link"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v2.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar"><button id="sidebarToggle"><i class="bi bi-list"></i></button></header>
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Dashboard</a><i class="bi bi-chevron-right"></i><a href="./index.html">Quotations</a><i class="bi bi-chevron-right"></i><span>Create</span></div>
+          <h1 class="page-title">Create Quotation</h1>
+          <p class="page-subtitle">Build a price estimate for a customer</p>
+        </div>
+        <a href="./index.html" class="btn-custom btn-outline-custom"><i class="bi bi-arrow-left"></i> Back</a>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-person"></i> Customer Details</span></div>
+            <div class="card-body-custom">
+              <div class="form-row form-row-2">
+                <div>
+                  <label class="form-label-custom">Customer *</label>
+                  <select id="qCustomer" class="form-control-custom" onchange="fillCustomer()"><option value="">— Select Customer —</option></select>
+                </div>
+                <div>
+                  <label class="form-label-custom">Quote Date</label>
+                  <input type="date" id="qDate" class="form-control-custom">
+                </div>
+                <div>
+                  <label class="form-label-custom">Valid Until</label>
+                  <input type="date" id="qValid" class="form-control-custom">
+                </div>
+                <div>
+                  <label class="form-label-custom">Status</label>
+                  <select id="qStatus" class="form-control-custom"><option>Draft</option><option selected>Sent</option><option>Accepted</option></select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-list-ul"></i> Line Items</span>
+              <button onclick="addRow()" class="btn-custom btn-outline-custom btn-sm"><i class="bi bi-plus"></i> Add Item</button>
+            </div>
+            <div class="table-wrapper">
+              <table class="table-custom" id="itemsTable">
+                <thead><tr><th>Product/Service</th><th>Qty</th><th>Price (₹)</th><th>Total</th><th></th></tr></thead>
+                <tbody id="itemsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card mb-4">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-calculator"></i> Summary</span></div>
+            <div class="card-body-custom">
+              <div class="invoice-summary-box">
+                <div class="invoice-summary-row"><span>Subtotal</span><span id="qSubtotal">₹0.00</span></div>
+                <div class="invoice-summary-row">
+                  <span>Discount</span>
+                  <div style="display:flex;gap:6px;align-items:center;">
+                    <input type="number" id="qDiscount" class="form-control-custom" style="width:70px;padding:4px 8px;" placeholder="0" oninput="calcTotal()">
+                    <select id="qDiscountType" class="form-control-custom" style="width:70px;padding:4px 6px;" onchange="calcTotal()"><option value="fixed">₹</option><option value="percent">%</option></select>
+                  </div>
+                </div>
+                <div class="invoice-summary-row total-row"><span>Total</span><span id="qTotal">₹0.00</span></div>
+              </div>
+              <div style="margin-top:16px;"><label class="form-label-custom">Notes</label><textarea id="qNotes" class="form-control-custom" placeholder="Optional message to customer..."></textarea></div>
+              <button onclick="saveQuote()" class="btn-custom btn-primary-custom" style="width:100%;justify-content:center;margin-top:14px;"><i class="bi bi-check-lg"></i> Save Quotation</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+let rowCount = 0;
+const products = Store.get('products', []);
+const customers = Store.get('customers', []);
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+  const qSel = document.getElementById('qCustomer');
+  customers.forEach(c => { const o = document.createElement('option'); o.value = c.id; o.textContent = c.name; qSel.appendChild(o); });
+  document.getElementById('qDate').value = Utils.today();
+  const valid = new Date(); valid.setDate(valid.getDate() + 15);
+  document.getElementById('qValid').value = valid.toISOString().split('T')[0];
+  addRow();
+  document.getElementById('collapseBtn').onclick = () => { document.querySelector('.sidebar').classList.toggle('collapsed'); document.querySelector('.main-content').classList.toggle('expanded'); };
+});
+
+function addRow() {
+  rowCount++;
+  const prodOpts = products.map(p => `<option value="${p.name}" data-price="${p.price}">${p.name} — ₹${p.price}</option>`).join('');
+  const html = `<tr id="row-${rowCount}">
+    <td><select class="form-control-custom" onchange="fillPrice(this,${rowCount})"><option value="">— Select Product —</option>${prodOpts}</select></td>
+    <td><input type="number" id="qty${rowCount}" class="form-control-custom" value="1" min="1" style="width:70px;" oninput="calcRow(${rowCount})"></td>
+    <td><input type="number" id="price${rowCount}" class="form-control-custom" placeholder="0" style="width:90px;" oninput="calcRow(${rowCount})"></td>
+    <td id="total${rowCount}" class="fw-bold">₹0.00</td>
+    <td><button onclick="removeRow(${rowCount})" class="btn-icon btn-del"><i class="bi bi-x-lg"></i></button></td>
+  </tr>`;
+  document.getElementById('itemsBody').insertAdjacentHTML('beforeend', html);
+}
+function fillPrice(sel, id) {
+  const opt = sel.options[sel.selectedIndex];
+  const p = opt.dataset.price || 0;
+  document.getElementById('price' + id).value = p;
+  calcRow(id);
+}
+function fillCustomer() {}
+function calcRow(id) {
+  const qty = parseFloat(document.getElementById('qty'+id).value)||0;
+  const price = parseFloat(document.getElementById('price'+id).value)||0;
+  document.getElementById('total'+id).textContent = Utils.currency(qty*price);
+  calcTotal();
+}
+function removeRow(id) { document.getElementById('row-'+id).remove(); calcTotal(); }
+function calcTotal() {
+  let sub = 0;
+  for (let i = 1; i <= rowCount; i++) {
+    const row = document.getElementById('row-'+i);
+    if (!row) continue;
+    const qty = parseFloat(document.getElementById('qty'+i)?.value)||0;
+    const price = parseFloat(document.getElementById('price'+i)?.value)||0;
+    sub += qty * price;
+  }
+  document.getElementById('qSubtotal').textContent = Utils.currency(sub);
+  const disc = parseFloat(document.getElementById('qDiscount').value)||0;
+  const dtype = document.getElementById('qDiscountType').value;
+  const discAmt = dtype === 'percent' ? sub * disc / 100 : disc;
+  const total = Math.max(0, sub - discAmt);
+  document.getElementById('qTotal').textContent = Utils.currency(total);
+}
+function saveQuote() {
+  const custId = document.getElementById('qCustomer').value;
+  if (!custId) { Utils.toast('Please select a customer', 'error'); return; }
+  const cust = customers.find(c => c.id === custId);
+  const items = [];
+  for (let i = 1; i <= rowCount; i++) {
+    const row = document.getElementById('row-'+i);
+    if (!row) continue;
+    const name = row.querySelector('select').value;
+    const qty = parseFloat(document.getElementById('qty'+i)?.value)||0;
+    const price = parseFloat(document.getElementById('price'+i)?.value)||0;
+    if (name && qty && price) items.push({ product: name, qty, price, total: qty*price });
+  }
+  if (!items.length) { Utils.toast('Add at least one item', 'error'); return; }
+  const sub = items.reduce((s,i)=>s+i.total,0);
+  const disc = parseFloat(document.getElementById('qDiscount').value)||0;
+  const dtype = document.getElementById('qDiscountType').value;
+  const discAmt = dtype==='percent' ? sub*disc/100 : disc;
+  const qs = Store.get('quotations', []);
+  const q = {
+    id: Utils.generateId('QT-', qs),
+    customerId: custId, customerName: cust.name,
+    date: document.getElementById('qDate').value,
+    validUntil: document.getElementById('qValid').value,
+    items, subtotal: sub, discount: disc, discountType: dtype,
+    total: Math.max(0, sub - discAmt),
+    status: document.getElementById('qStatus').value,
+    invoiceId: '', notes: document.getElementById('qNotes').value
+  };
+  qs.push(q);
+  Store.set('quotations', qs);
+  ActivityLog.push(`Created Quotation ${q.id} for ${cust.name}`);
+  Utils.toast('Quotation saved!', 'success');
+  setTimeout(() => window.location.href = './index.html', 800);
+}
+</script>
+</body>
+</html>

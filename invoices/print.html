@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Print Invoice — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+  body { background: #fff; }
+  .print-invoice { max-width: 800px; margin: 20px auto; padding: 40px; background: #fff; }
+  .no-print-header { text-align: center; margin-bottom: 20px; }
+  .no-print-header button { padding: 8px 20px; background: #4f46e5; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; margin: 0 6px; }
+  .no-print-header .btn-wa { background: #25d366; }
+  @media print { .no-print-header { display: none; } body { margin: 0; } .print-invoice { margin: 0; padding: 30px; } }
+</style>
+</head>
+<body>
+
+<div class="no-print-header no-print">
+  <button onclick="window.print()"><i>🖨️</i> Print</button>
+  <button class="btn-wa" id="waBtn">💬 WhatsApp</button>
+  <button onclick="window.close()">✕ Close</button>
+</div>
+
+<div class="print-invoice" id="printArea">
+  <div class="inv-header">
+    <div>
+      <div class="inv-shop-name" id="invShopName">BHAI BHAI COMMUNICATION</div>
+      <div class="inv-shop-meta" id="invShopAddress"></div>
+      <div class="inv-shop-meta">Ph: <span id="invShopPhone"></span> | UPI: <span id="invShopUpi"></span></div>
+    </div>
+    <div>
+      <div class="inv-title">INVOICE</div>
+      <div class="inv-info"><strong># <span id="invNumber"></span></strong></div>
+      <div class="inv-info">Date: <span id="invDate"></span></div>
+      <div class="inv-info">Due: <span id="invDueDate"></span></div>
+      <div class="inv-info mt-2" id="invStatus"></div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;color:#94a3b8;margin-bottom:5px;">Bill To</div>
+    <div style="font-size:16px;font-weight:700;color:#1e293b;" id="invCustomerName"></div>
+  </div>
+
+  <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+    <thead>
+      <tr>
+        <th style="background:#1e1b4b;color:#fff;padding:10px 12px;font-size:12px;text-transform:uppercase;text-align:left;">#</th>
+        <th style="background:#1e1b4b;color:#fff;padding:10px 12px;font-size:12px;text-transform:uppercase;text-align:left;">Product</th>
+        <th style="background:#1e1b4b;color:#fff;padding:10px 12px;font-size:12px;text-transform:uppercase;text-align:center;">Qty</th>
+        <th style="background:#1e1b4b;color:#fff;padding:10px 12px;font-size:12px;text-transform:uppercase;text-align:right;">Rate</th>
+        <th style="background:#1e1b4b;color:#fff;padding:10px 12px;font-size:12px;text-transform:uppercase;text-align:right;">Amount</th>
+      </tr>
+    </thead>
+    <tbody id="invItemsBody"></tbody>
+  </table>
+
+  <div class="inv-totals">
+    <div class="inv-total-row"><span>Subtotal</span><span id="invSubtotal"></span></div>
+    <div class="inv-total-row"><span style="color:#10b981">Discount</span><span id="invDiscount" style="color:#10b981"></span></div>
+    <div class="inv-total-row grand"><span>Total</span><span id="invTotal"></span></div>
+    <div class="inv-total-row"><span style="color:#10b981">Amount Paid</span><span id="invPaid" style="color:#10b981"></span></div>
+    <div class="inv-total-row" style="font-size:14px;font-weight:600;"><span style="color:#ef4444">Balance Due</span><span id="invDue" style="color:#ef4444"></span></div>
+  </div>
+
+  <div style="margin-top:30px;padding-top:16px;border-top:1px solid #e2e5ec;font-size:12px;color:#94a3b8;text-align:center;">
+    <p>Thank you for your business! | UPI: bhai-bhai@paytm | BHAI BHAI COMMUNICATION</p>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/invoice.js"></script>
+<script>
+  // Auto-print on load
+  window.onload = function () {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (!id) { document.body.innerHTML = '<p style="text-align:center;padding:40px;color:red;">No invoice ID.</p>'; return; }
+
+    // Render using InvoiceViewer
+    InvoiceViewer.init();
+
+    // WhatsApp button
+    const waBtn = document.getElementById('waBtn');
+    if (waBtn && InvoiceViewer.invoice) {
+      const inv = InvoiceViewer.invoice;
+      waBtn.onclick = function () {
+        const text = `*Invoice ${inv.id}*\nCustomer: ${inv.customerName}\nDate: ${inv.date}\nTotal: ₹${inv.total}\nStatus: ${inv.status}\n\nBHAI BHAI COMMUNICATION\nUPI: bhai-bhai@paytm`;
+        window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+      };
+    }
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar"><div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link active"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v3.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar"><button id="sidebarToggle"><i class="bi bi-list"></i></button></header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Home</a><i class="bi bi-chevron-right"></i><span>Reports</span></div>
+          <h1 class="page-title">Reports & Analytics</h1>
+          <p class="page-subtitle">Complete financial overview, P&L, and sales analytics</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input type="date" id="dateFrom" class="form-control-custom" style="width:140px;" title="From">
+          <input type="date" id="dateTo" class="form-control-custom" style="width:140px;" title="To">
+          <button class="btn-custom btn-outline-custom" onclick="applyDateFilter()"><i class="bi bi-funnel"></i> Filter</button>
+          <button class="btn-custom btn-primary-custom" onclick="exportCurrentTab()"><i class="bi bi-download"></i> Export CSV</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="card mb-4">
+        <div style="padding:0 20px;border-bottom:1px solid var(--card-border);">
+          <div class="filter-tabs" id="reportTabs">
+            <button class="filter-tab active" data-tab="pl"><i class="bi bi-graph-up"></i> P&L Statement</button>
+            <button class="filter-tab" data-tab="revenue"><i class="bi bi-bar-chart-line"></i> Revenue Chart</button>
+            <button class="filter-tab" data-tab="gst"><i class="bi bi-percent"></i> GST Summary</button>
+            <button class="filter-tab" data-tab="customer"><i class="bi bi-people"></i> Customer-wise</button>
+            <button class="filter-tab" data-tab="product"><i class="bi bi-box-seam"></i> Product-wise</button>
+            <button class="filter-tab" data-tab="payments"><i class="bi bi-credit-card"></i> Payments</button>
+          </div>
+        </div>
+
+        <!-- P&L Tab -->
+        <div id="tab-pl" class="tab-content-panel">
+          <div class="card-body-custom">
+            <div class="row g-3 mb-4" id="plStats"></div>
+            <div class="row g-3">
+              <div class="col-lg-5">
+                <h5 style="font-weight:700;margin-bottom:14px;"><i class="bi bi-graph-up me-2" style="color:var(--primary);"></i>Profit & Loss Statement</h5>
+                <div id="plTable"></div>
+              </div>
+              <div class="col-lg-7">
+                <h5 style="font-weight:700;margin-bottom:14px;"><i class="bi bi-bar-chart me-2" style="color:var(--primary);"></i>Monthly Trend</h5>
+                <div class="chart-container" style="height:250px;"><canvas id="plChart"></canvas></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Revenue Chart Tab -->
+        <div id="tab-revenue" class="tab-content-panel" style="display:none;">
+          <div class="card-body-custom">
+            <div class="chart-container" style="height:300px;"><canvas id="revenueChartMain"></canvas></div>
+          </div>
+        </div>
+
+        <!-- GST Tab -->
+        <div id="tab-gst" class="tab-content-panel" style="display:none;">
+          <div class="card-body-custom">
+            <div class="row g-3 mb-3" id="gstStats"></div>
+            <div class="table-wrapper"><table class="table-custom" id="gstTable"><thead><tr><th>Invoice</th><th>Customer</th><th>Date</th><th>Taxable Amt</th><th>GST %</th><th>GST Amt</th><th>Total</th></tr></thead><tbody id="gstBody"></tbody></table></div>
+          </div>
+        </div>
+
+        <!-- Customer-wise Tab -->
+        <div id="tab-customer" class="tab-content-panel" style="display:none;">
+          <div class="card-body-custom">
+            <div class="table-wrapper"><table class="table-custom"><thead><tr><th>#</th><th>Customer</th><th>Invoices</th><th>Billed</th><th>Collected</th><th>Balance</th><th>Avg Invoice</th></tr></thead><tbody id="custBody"></tbody></table></div>
+          </div>
+        </div>
+
+        <!-- Product-wise Tab -->
+        <div id="tab-product" class="tab-content-panel" style="display:none;">
+          <div class="card-body-custom">
+            <div class="table-wrapper"><table class="table-custom"><thead><tr><th>#</th><th>Product</th><th>Qty Sold</th><th>Revenue</th><th>Avg Price</th></tr></thead><tbody id="prodBody"></tbody></table></div>
+          </div>
+        </div>
+
+        <!-- Payments Tab -->
+        <div id="tab-payments" class="tab-content-panel" style="display:none;">
+          <div class="card-body-custom">
+            <div class="row g-3 mb-3" id="payStatsR"></div>
+            <div class="table-wrapper"><table class="table-custom"><thead><tr><th>Payment ID</th><th>Invoice</th><th>Customer</th><th>Amount</th><th>Method</th><th>Date</th></tr></thead><tbody id="payBodyR"></tbody></table></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+let currentTab = 'pl';
+let filterFrom = '', filterTo = '';
+let plChartInst = null, revChartInst = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+
+  // Set default date range to current month
+  const now = new Date();
+  document.getElementById('dateFrom').value = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+  document.getElementById('dateTo').value = Utils.today();
+
+  document.querySelectorAll('#reportTabs .filter-tab').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#reportTabs .filter-tab').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      document.querySelectorAll('.tab-content-panel').forEach(p => p.style.display = 'none');
+      currentTab = this.dataset.tab;
+      document.getElementById('tab-' + currentTab).style.display = '';
+      renderTab();
+    });
+  });
+  renderTab();
+});
+
+window.applyDateFilter = function() {
+  filterFrom = document.getElementById('dateFrom').value;
+  filterTo   = document.getElementById('dateTo').value;
+  renderTab();
+};
+
+function dateInRange(d) {
+  if (filterFrom && d < filterFrom) return false;
+  if (filterTo   && d > filterTo)   return false;
+  return true;
+}
+
+function renderTab() {
+  filterFrom = document.getElementById('dateFrom').value;
+  filterTo   = document.getElementById('dateTo').value;
+  const inv = Store.get('invoices',[]).filter(i => dateInRange(i.date));
+  const exp = Store.get('expenses',[]).filter(e => dateInRange(e.date));
+  const pay = Store.get('payments',[]).filter(p => dateInRange(p.date));
+  const s = Store.get('settings',{});
+
+  if (currentTab === 'pl') renderPL(inv, exp, pay, s);
+  else if (currentTab === 'revenue') renderRevenue(inv, exp);
+  else if (currentTab === 'gst') renderGST(inv, s);
+  else if (currentTab === 'customer') renderCustomer(inv);
+  else if (currentTab === 'product') renderProduct(inv);
+  else if (currentTab === 'payments') renderPayments(pay);
+}
+
+function renderPL(inv, exp, pay, s) {
+  const totalBilled = inv.reduce((a,i)=>a+i.total,0);
+  const collected   = inv.reduce((a,i)=>a+i.paid,0);
+  const outstanding = inv.reduce((a,i)=>a+(i.total-i.paid),0);
+  const totalExp    = exp.reduce((a,e)=>a+e.amount,0);
+  const grossP      = collected - totalExp;
+  const margin      = collected>0 ? ((grossP/collected)*100).toFixed(1) : '0.0';
+
+  document.getElementById('plStats').innerHTML = [
+    {icon:'bi-receipt',label:'Total Billed',val:Utils.currency(totalBilled),cls:'grad-blue'},
+    {icon:'bi-check-circle',label:'Collected',val:Utils.currency(collected),cls:'grad-green'},
+    {icon:'bi-wallet2',label:'Total Expenses',val:Utils.currency(totalExp),cls:'grad-red'},
+    {icon:'bi-graph-up-arrow',label:'Net Profit',val:Utils.currency(grossP),cls:'grad-purple'},
+  ].map(c=>`<div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon ${c.cls}"><i class="bi ${c.icon}"></i></div><div class="stat-info"><div class="stat-value">${c.val}</div><div class="stat-label">${c.label}</div></div></div></div>`).join('');
+
+  document.getElementById('plTable').innerHTML = `
+    <div class="summary-row"><span class="sr-label">Total Invoiced</span><span class="sr-val">${Utils.currency(totalBilled)}</span></div>
+    <div class="summary-row"><span class="sr-label">Amount Collected</span><span class="sr-val" style="color:var(--success);">${Utils.currency(collected)}</span></div>
+    <div class="summary-row"><span class="sr-label">Outstanding</span><span class="sr-val" style="color:var(--warning);">${Utils.currency(outstanding)}</span></div>
+    <div class="summary-row" style="padding-top:14px;"><span class="sr-label" style="font-weight:700;">INCOME (Collected)</span><span class="sr-val" style="color:var(--success);font-size:15px;">${Utils.currency(collected)}</span></div>
+    <div class="summary-row"><span class="sr-label">Less: Total Expenses</span><span class="sr-val" style="color:var(--danger);">- ${Utils.currency(totalExp)}</span></div>
+    <div class="summary-row highlight"><span class="sr-label">Net Profit / Loss</span><span class="sr-val" style="color:${grossP>=0?'var(--success)':'var(--danger)'};">${Utils.currency(grossP)}</span></div>
+    <div style="margin-top:10px;font-size:12px;color:var(--text-muted);">Profit Margin: <strong style="color:var(--primary);">${margin}%</strong></div>`;
+
+  // Monthly line chart
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const mRev=new Array(12).fill(0), mExp=new Array(12).fill(0);
+  inv.forEach(i=>{const m=new Date(i.date).getMonth();if(!isNaN(m))mRev[m]+=i.paid;});
+  exp.forEach(e=>{const m=new Date(e.date).getMonth();if(!isNaN(m))mExp[m]+=e.amount;});
+  if(plChartInst){plChartInst.destroy();}
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const gc=isDark?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.06)', lc=isDark?'#94a3b8':'#64748b';
+  plChartInst=new Chart(document.getElementById('plChart'),{
+    type:'line',
+    data:{labels:months,datasets:[
+      {label:'Revenue',data:mRev,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.1)',fill:true,tension:0.4,pointRadius:4},
+      {label:'Expenses',data:mExp,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.08)',fill:true,tension:0.4,pointRadius:4},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:lc,font:{size:12}}}},scales:{x:{grid:{color:gc},ticks:{color:lc}},y:{grid:{color:gc},ticks:{color:lc,callback:v=>'₹'+(v/1000).toFixed(0)+'k'}}}}
+  });
+}
+
+function renderRevenue(inv, exp) {
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const mRev=new Array(12).fill(0),mExp=new Array(12).fill(0);
+  inv.forEach(i=>{const m=new Date(i.date).getMonth();if(!isNaN(m))mRev[m]+=i.paid;});
+  exp.forEach(e=>{const m=new Date(e.date).getMonth();if(!isNaN(m))mExp[m]+=e.amount;});
+  if(revChartInst){revChartInst.destroy();}
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const gc=isDark?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.06)',lc=isDark?'#94a3b8':'#64748b';
+  revChartInst=new Chart(document.getElementById('revenueChartMain'),{
+    type:'bar',
+    data:{labels:months,datasets:[
+      {label:'Revenue',data:mRev,backgroundColor:'rgba(99,102,241,0.85)',borderRadius:6,borderSkipped:false},
+      {label:'Expenses',data:mExp,backgroundColor:'rgba(239,68,68,0.7)',borderRadius:6,borderSkipped:false},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:lc,font:{size:12}}}},scales:{x:{grid:{color:gc},ticks:{color:lc}},y:{grid:{color:gc},ticks:{color:lc,callback:v=>'₹'+(v/1000).toFixed(0)+'k'}}}}
+  });
+}
+
+function renderGST(inv, s) {
+  const taxRate = s.taxRate || 0;
+  const totalTaxable = inv.reduce((a,i)=>a+i.subtotal,0);
+  const totalGST     = inv.reduce((a,i)=>a+(i.total-i.subtotal)||0, 0);
+  const totalInv     = inv.reduce((a,i)=>a+i.total,0);
+  document.getElementById('gstStats').innerHTML = [
+    {label:'Taxable Amount',val:Utils.currency(totalTaxable),cls:'grad-blue'},
+    {label:'Total GST',val:Utils.currency(Math.max(0,totalGST)),cls:'grad-orange'},
+    {label:'Total Invoice Value',val:Utils.currency(totalInv),cls:'grad-green'},
+    {label:'Default Tax Rate',val:taxRate+'%',cls:'grad-purple'},
+  ].map(c=>`<div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon ${c.cls}"><i class="bi bi-percent"></i></div><div class="stat-info"><div class="stat-value">${c.val}</div><div class="stat-label">${c.label}</div></div></div></div>`).join('');
+  document.getElementById('gstBody').innerHTML = inv.length===0
+    ? '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-percent"></i><p>No invoices in range</p></div></td></tr>'
+    : [...inv].reverse().map(i=>{
+        const taxAmt = Math.max(0, i.total - i.subtotal);
+        const rate   = i.subtotal>0?((taxAmt/i.subtotal)*100).toFixed(0)+'%':'0%';
+        return `<tr><td><a href="../invoices/view.html?id=${i.id}" style="color:var(--primary);">${i.id}</a></td><td>${i.customerName}</td><td>${Utils.formatDate(i.date)}</td><td>${Utils.currency(i.subtotal)}</td><td>${rate}</td><td style="color:var(--warning);font-weight:600;">${Utils.currency(taxAmt)}</td><td class="fw-bold">${Utils.currency(i.total)}</td></tr>`;
+      }).join('');
+}
+
+function renderCustomer(inv) {
+  const map={};
+  inv.forEach(i=>{
+    if(!map[i.customerName])map[i.customerName]={name:i.customerName,id:i.customerId,count:0,billed:0,collected:0};
+    map[i.customerName].count++;
+    map[i.customerName].billed+=i.total;
+    map[i.customerName].collected+=i.paid;
+  });
+  const rows=Object.values(map).sort((a,b)=>b.billed-a.billed);
+  document.getElementById('custBody').innerHTML = rows.length===0
+    ? '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-people"></i><p>No data</p></div></td></tr>'
+    : rows.map((c,i)=>`<tr>
+        <td>${i+1}</td>
+        <td><a href="../customers/view.html?id=${c.id||''}" style="color:var(--primary);font-weight:600;">${c.name}</a></td>
+        <td>${c.count}</td>
+        <td class="fw-bold">${Utils.currency(c.billed)}</td>
+        <td style="color:var(--success);font-weight:600;">${Utils.currency(c.collected)}</td>
+        <td style="color:var(--danger);font-weight:600;">${Utils.currency(c.billed-c.collected)}</td>
+        <td>${Utils.currency(c.count>0?c.billed/c.count:0)}</td>
+      </tr>`).join('');
+}
+
+function renderProduct(inv) {
+  const map={};
+  inv.forEach(i=>i.items&&i.items.forEach(item=>{
+    if(!map[item.product])map[item.product]={name:item.product,qty:0,rev:0};
+    map[item.product].qty+=item.qty||1;
+    map[item.product].rev+=item.total||0;
+  }));
+  const rows=Object.values(map).sort((a,b)=>b.rev-a.rev);
+  document.getElementById('prodBody').innerHTML = rows.length===0
+    ? '<tr><td colspan="5"><div class="empty-state"><i class="bi bi-box-seam"></i><p>No data</p></div></td></tr>'
+    : rows.map((p,i)=>`<tr>
+        <td>${i+1}</td>
+        <td style="font-weight:600;">${p.name}</td>
+        <td>${p.qty}</td>
+        <td class="fw-bold" style="color:var(--primary);">${Utils.currency(p.rev)}</td>
+        <td>${Utils.currency(p.qty>0?p.rev/p.qty:0)}</td>
+      </tr>`).join('');
+}
+
+function renderPayments(pay) {
+  const total = pay.reduce((a,p)=>a+p.amount,0);
+  const byCash= pay.filter(p=>p.method==='Cash').reduce((a,p)=>a+p.amount,0);
+  const byUPI = pay.filter(p=>p.method==='UPI').reduce((a,p)=>a+p.amount,0);
+  document.getElementById('payStatsR').innerHTML = [
+    {label:'Total Collected',val:Utils.currency(total),cls:'grad-blue'},
+    {label:'Cash',val:Utils.currency(byCash),cls:'grad-green'},
+    {label:'UPI',val:Utils.currency(byUPI),cls:'grad-purple'},
+    {label:'Transactions',val:pay.length,cls:'grad-teal'},
+  ].map(c=>`<div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon ${c.cls}"><i class="bi bi-credit-card"></i></div><div class="stat-info"><div class="stat-value">${c.val}</div><div class="stat-label">${c.label}</div></div></div></div>`).join('');
+  document.getElementById('payBodyR').innerHTML = pay.length===0
+    ? '<tr><td colspan="6"><div class="empty-state"><i class="bi bi-credit-card"></i><p>No payments in range</p></div></td></tr>'
+    : [...pay].reverse().map(p=>`<tr><td style="color:var(--primary);font-weight:600;">${p.id}</td><td>${p.invoice}</td><td>${p.customer}</td><td class="fw-bold" style="color:var(--success);">${Utils.currency(p.amount)}</td><td>${p.method}</td><td>${Utils.formatDate(p.date)}</td></tr>`).join('');
+}
+
+window.exportCurrentTab = function() {
+  const inv = Store.get('invoices',[]).filter(i=>dateInRange(i.date));
+  const pay = Store.get('payments',[]).filter(p=>dateInRange(p.date));
+  const exp = Store.get('expenses',[]).filter(e=>dateInRange(e.date));
+  if(currentTab==='pl'||currentTab==='revenue') {
+    csvExport(['Invoice ID','Customer','Date','Total','Paid','Balance','Status'],inv.map(i=>[i.id,i.customerName,i.date,i.total,i.paid,i.total-i.paid,i.status]),`pl_report_${Utils.today()}.csv`);
+  } else if(currentTab==='gst') {
+    csvExport(['Invoice','Customer','Date','Subtotal','GST Amount','Total'],inv.map(i=>[i.id,i.customerName,i.date,i.subtotal,Math.max(0,i.total-i.subtotal),i.total]),`gst_report_${Utils.today()}.csv`);
+  } else if(currentTab==='customer') {
+    const m={};inv.forEach(i=>{if(!m[i.customerName])m[i.customerName]={c:0,b:0,p:0};m[i.customerName].c++;m[i.customerName].b+=i.total;m[i.customerName].p+=i.paid;});
+    csvExport(['Customer','Invoices','Billed','Collected','Balance'],Object.entries(m).map(([n,v])=>[n,v.c,v.b,v.p,v.b-v.p]),`customer_report_${Utils.today()}.csv`);
+  } else if(currentTab==='product') {
+    const m={};inv.forEach(i=>i.items&&i.items.forEach(it=>{if(!m[it.product])m[it.product]={qty:0,rev:0};m[it.product].qty+=it.qty||1;m[it.product].rev+=it.total||0;}));
+    csvExport(['Product','Qty Sold','Revenue'],Object.entries(m).map(([n,v])=>[n,v.qty,v.rev]),`product_report_${Utils.today()}.csv`);
+  } else if(currentTab==='payments') {
+    csvExport(['Payment ID','Invoice','Customer','Amount','Method','Date'],pay.map(p=>[p.id,p.invoice,p.customer,p.amount,p.method,p.date]),`payments_report_${Utils.today()}.csv`);
+  }
+};
+</script>
+</body>
+</html>

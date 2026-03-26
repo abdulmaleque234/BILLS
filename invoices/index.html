@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoices — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar"><div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link active"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../quotations/index.html" class="nav-link"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v3.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar"><button id="sidebarToggle"><i class="bi bi-list"></i></button></header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Home</a><i class="bi bi-chevron-right"></i><span>Invoices</span></div>
+          <h1 class="page-title">Invoices</h1>
+          <p class="page-subtitle">Manage all your sales invoices</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-custom btn-outline-custom" onclick="exportCSV()"><i class="bi bi-download"></i> Export CSV</button>
+          <button class="btn-custom btn-outline-custom" id="bulkPayBtn" onclick="bulkMarkPaid()" style="display:none;"><i class="bi bi-check-all"></i> Mark Paid</button>
+          <a href="./create.html" class="btn-custom btn-primary-custom"><i class="bi bi-plus"></i> New Invoice</a>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon grad-blue"><i class="bi bi-receipt"></i></div><div class="stat-info"><div class="stat-value" id="stTotal">0</div><div class="stat-label">Total Invoices</div></div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon grad-green"><i class="bi bi-check-circle"></i></div><div class="stat-info"><div class="stat-value" id="stPaid">0</div><div class="stat-label">Paid</div></div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon grad-red"><i class="bi bi-x-circle"></i></div><div class="stat-info"><div class="stat-value" id="stUnpaid">0</div><div class="stat-label">Unpaid / Partial</div></div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon grad-orange"><i class="bi bi-hourglass-split"></i></div><div class="stat-info"><div class="stat-value" id="stDue">₹0</div><div class="stat-label">Total Outstanding</div></div></div></div>
+      </div>
+
+      <!-- Filters + Table -->
+      <div class="card">
+        <div class="card-header-custom" style="flex-wrap:wrap;gap:10px;">
+          <span class="card-title-custom"><i class="bi bi-receipt"></i> All Invoices</span>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto;">
+            <input type="date" id="dateFrom" class="form-control-custom" style="width:140px;" title="From date">
+            <input type="date" id="dateTo" class="form-control-custom" style="width:140px;" title="To date">
+            <select id="statusFilter" class="form-control-custom" style="width:130px;">
+              <option value="">All Status</option>
+              <option>Paid</option><option>Unpaid</option><option>Partial</option><option>Overdue</option>
+            </select>
+            <div class="search-bar"><i class="bi bi-search"></i><input type="text" id="searchInput" class="form-control-custom" placeholder="Search…"></div>
+          </div>
+        </div>
+        <!-- Status Filter Tabs -->
+        <div style="padding:0 20px;border-bottom:1px solid var(--card-border);">
+          <div class="filter-tabs" id="statusTabs">
+            <button class="filter-tab active" data-status="">All</button>
+            <button class="filter-tab" data-status="Paid">✅ Paid</button>
+            <button class="filter-tab" data-status="Unpaid">❌ Unpaid</button>
+            <button class="filter-tab" data-status="Partial">⏳ Partial</button>
+            <button class="filter-tab" data-status="Overdue">🔴 Overdue</button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="table-custom">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
+                <th>#Invoice</th><th>Customer</th><th>Date</th><th>Due Date</th><th>Amount</th><th>Paid</th><th>Balance</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="invoicesBody"></tbody>
+          </table>
+        </div>
+        <div id="tableFooter" style="padding:10px 20px;font-size:13px;color:var(--text-muted);border-top:1px solid var(--card-border);"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+let currentStatus = '';
+let allInvoices = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+
+  // Status tabs
+  document.querySelectorAll('#statusTabs .filter-tab').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#statusTabs .filter-tab').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentStatus = this.dataset.status;
+      document.getElementById('statusFilter').value = '';
+      render();
+    });
+  });
+  document.getElementById('statusFilter').addEventListener('change', function() { currentStatus = this.value; render(); });
+  document.getElementById('dateFrom').addEventListener('change', render);
+  document.getElementById('dateTo').addEventListener('change', render);
+  document.getElementById('searchInput').addEventListener('input', render);
+
+  render();
+});
+
+function render() {
+  allInvoices = Store.get('invoices', []);
+  const statusF = currentStatus;
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo   = document.getElementById('dateTo').value;
+  const search   = document.getElementById('searchInput').value.toLowerCase();
+
+  let filtered = allInvoices;
+  if (statusF === 'Overdue') {
+    filtered = filtered.filter(i => Utils.isOverdue(i.dueDate, i.status));
+  } else if (statusF) {
+    filtered = filtered.filter(i => i.status === statusF);
+  }
+  if (dateFrom) filtered = filtered.filter(i => i.date >= dateFrom);
+  if (dateTo)   filtered = filtered.filter(i => i.date <= dateTo);
+  if (search)   filtered = filtered.filter(i => (i.id + i.customerName + i.status).toLowerCase().includes(search));
+
+  // Stats (always full)
+  const totalDue = allInvoices.reduce((s,i) => s+(i.total-i.paid), 0);
+  document.getElementById('stTotal').textContent  = allInvoices.length;
+  document.getElementById('stPaid').textContent   = allInvoices.filter(i=>i.status==='Paid').length;
+  document.getElementById('stUnpaid').textContent = allInvoices.filter(i=>i.status!=='Paid').length;
+  document.getElementById('stDue').textContent    = Utils.currency(totalDue);
+
+  const rows = [...filtered].reverse();
+  document.getElementById('tableFooter').textContent = `Showing ${rows.length} of ${allInvoices.length} invoices`;
+
+  document.getElementById('invoicesBody').innerHTML = rows.length === 0
+    ? '<tr><td colspan="10"><div class="empty-state"><i class="bi bi-receipt"></i><p>No invoices found. <a href="./create.html">Create one</a></p></div></td></tr>'
+    : rows.map(inv => {
+        const overdue = Utils.isOverdue(inv.dueDate, inv.status);
+        const balance = inv.total - inv.paid;
+        return `<tr>
+          <td><input type="checkbox" class="inv-check" value="${inv.id}" onchange="updateBulkBtn()"></td>
+          <td><a href="./view.html?id=${inv.id}" style="color:var(--primary);font-weight:600;">${inv.id}</a></td>
+          <td><a href="../customers/view.html?id=${inv.customerId||''}" style="color:var(--text-primary);">${inv.customerName}</a></td>
+          <td>${Utils.formatDate(inv.date)}</td>
+          <td style="${overdue?'color:var(--danger);font-weight:600;':''}">${Utils.formatDate(inv.dueDate)}</td>
+          <td class="fw-bold">${Utils.currency(inv.total)}</td>
+          <td style="color:var(--success);">${Utils.currency(inv.paid)}</td>
+          <td class="fw-bold" style="color:${balance>0?'var(--danger)':'var(--success)'};">${Utils.currency(balance)}</td>
+          <td>${Utils.statusBadge(overdue?'Overdue':inv.status)}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="./view.html?id=${inv.id}" class="btn-icon btn-view" title="View"><i class="bi bi-eye"></i></a>
+              <a href="./edit.html?id=${inv.id}" class="btn-icon btn-edit" title="Edit"><i class="bi bi-pencil"></i></a>
+              <button class="btn-icon" onclick="duplicateInvoice('${inv.id}')" title="Duplicate"><i class="bi bi-copy"></i></button>
+              ${inv.status!=='Paid'?`<button class="btn-icon" onclick="openQuickPay('${inv.id}')" title="Quick Pay"><i class="bi bi-credit-card"></i></button>`:''}
+              <a href="./print.html?id=${inv.id}" class="btn-icon" title="Print" target="_blank"><i class="bi bi-printer"></i></a>
+              <button class="btn-icon btn-delete" onclick="deleteInvoice('${inv.id}')" title="Delete"><i class="bi bi-trash"></i></button>
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+}
+
+window.toggleSelectAll = function(cb) {
+  document.querySelectorAll('.inv-check').forEach(c => c.checked = cb.checked);
+  updateBulkBtn();
+};
+
+window.updateBulkBtn = function() {
+  const anyChecked = document.querySelectorAll('.inv-check:checked').length > 0;
+  document.getElementById('bulkPayBtn').style.display = anyChecked ? 'inline-flex' : 'none';
+};
+
+window.bulkMarkPaid = function() {
+  const checked = [...document.querySelectorAll('.inv-check:checked')].map(c => c.value);
+  if (!checked.length) return;
+  if (!confirm(`Mark ${checked.length} invoice(s) as Paid?`)) return;
+  const invoices = Store.get('invoices',[]);
+  checked.forEach(id => {
+    const idx = invoices.findIndex(i => i.id === id);
+    if (idx > -1 && invoices[idx].status !== 'Paid') {
+      invoices[idx].paid = invoices[idx].total;
+      invoices[idx].status = 'Paid';
+      // Record payment
+      const payments = Store.get('payments',[]);
+      const due = invoices[idx].total - (invoices[idx].paid - invoices[idx].total);
+      if (due > 0) {
+        payments.push({ id:Utils.generateId('PAY-',payments), invoice:id, customer:invoices[idx].customerName, amount:due, method:'Cash', date:Utils.today(), status:'Verified', ref:'Bulk' });
+        Store.set('payments', payments);
+      }
+    }
+  });
+  Store.set('invoices', invoices);
+  ActivityLog.push(`Bulk marked ${checked.length} invoices as Paid`);
+  Utils.toast(`${checked.length} invoice(s) marked as Paid!`, 'success');
+  render();
+};
+
+window.duplicateInvoice = function(id) {
+  const invoices = Store.get('invoices',[]);
+  const orig = invoices.find(i => i.id === id); if (!orig) return;
+  const newInv = { ...JSON.parse(JSON.stringify(orig)), id: Utils.generateId('INV-', invoices), date: Utils.today(), paid: 0, status: 'Unpaid', notes: 'Duplicate of ' + id };
+  invoices.push(newInv);
+  Store.set('invoices', invoices);
+  ActivityLog.push(`Invoice ${newInv.id} duplicated from ${id}`);
+  Utils.toast(`Duplicated as ${newInv.id}`, 'success');
+  render();
+};
+
+window.deleteInvoice = function(id) {
+  if (!confirm('Delete invoice ' + id + '? This cannot be undone.')) return;
+  const invoices = Store.get('invoices',[]);
+  Store.set('invoices', invoices.filter(i => i.id !== id));
+  ActivityLog.push(`Invoice ${id} deleted`);
+  Utils.toast('Invoice deleted!', 'warning');
+  render();
+};
+
+function exportCSV() {
+  const invoices = Store.get('invoices',[]);
+  const headers = ['Invoice ID','Customer','Date','Due Date','Total','Paid','Balance','Status'];
+  const rows = invoices.map(i => [i.id, i.customerName, i.date, i.dueDate, i.total, i.paid, i.total-i.paid, i.status]);
+  csvExport(headers, rows, `invoices_${Utils.today()}.csv`);
+}
+</script>
+</body>
+</html>

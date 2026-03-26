@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" media="print" onload="this.media='all'">
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i> Customers</a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i> Products</a></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i> Invoices</a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i> Payments</a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i> Expenses</a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i> Reports</a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i> Reminders</a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i> Activity Log</a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link active"><i class="bi bi-gear"></i> Settings</a></li>
+      <li class="nav-item"><a href="../profile.html" class="nav-link"><i class="bi bi-person-circle"></i> Profile</a></li>
+    </ul></nav>
+    <div class="sidebar-footer">Bills v1.0 &copy; 2025</div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+  <div class="main-content">
+    <header class="topbar">
+      <button id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <span class="topbar-title">Settings</span>
+    </header>
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Home</a><i class="bi bi-chevron-right"></i><span>Settings</span></div>
+          <h1 class="page-title">System Settings</h1>
+          <p class="page-subtitle">Configure your billing system</p>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Shop Settings -->
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-shop"></i> Shop Information</span></div>
+            <div class="card-body-custom">
+              <form onsubmit="saveSettings(event)">
+                <div class="mb-3"><label class="form-label-custom">Shop Name</label><input id="sShopName" class="form-control-custom" value="BHAI BHAI COMMUNICATION"></div>
+                <div class="form-row form-row-2 mb-3">
+                  <div><label class="form-label-custom">UPI ID</label><input id="sUpi" class="form-control-custom" value="bhai-bhai@paytm"></div>
+                  <div><label class="form-label-custom">Phone</label><input id="sPhone" class="form-control-custom" value="9876543210"></div>
+                </div>
+                <div class="mb-3"><label class="form-label-custom">Email</label><input type="email" id="sEmail" class="form-control-custom" value="bhaibhai@email.com"></div>
+                <div class="mb-3"><label class="form-label-custom">Address</label><textarea id="sAddress" class="form-control-custom" rows="2">Main Bazaar, Guwahati, Assam - 781001</textarea></div>
+                <div class="form-row form-row-2 mb-4">
+                  <div><label class="form-label-custom">GSTIN (Optional)</label><input id="sGst" class="form-control-custom" value="18XXXXX1234Z1ZX"></div>
+                  <div><label class="form-label-custom">Invoice Prefix</label><input id="sPrefix" class="form-control-custom" value="INV-"></div>
+                </div>
+                <div class="form-row form-row-3 mb-4">
+                  <div><label class="form-label-custom">Default Tax Rate (%)</label><input type="number" id="sTax" class="form-control-custom" value="18" min="0" max="100"></div>
+                  <div><label class="form-label-custom">Monthly Target (₹)</label><input type="number" id="sTarget" class="form-control-custom" value="50000" min="0"></div>
+                  <div><label class="form-label-custom">Currency Symbol</label><input id="sCurrency" class="form-control-custom" value="₹"></div>
+                </div>
+                <div class="mb-3"><label class="form-label-custom">Invoice Footer Note</label><input id="sNote" class="form-control-custom" placeholder="Thank you for your business!"></div>
+                <div class="mb-4"><label class="form-label-custom">WhatsApp Template URL</label><input id="sWhatsapp" class="form-control-custom" placeholder="https://wa.me/91XXXXXXXXXX"></div>
+                <div class="mb-4">
+                  <label class="form-label-custom"><i class="bi bi-image me-1"></i>Shop Logo</label>
+                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px;">
+                    <img id="logoPreview" src="../assets/img/logo.png" alt="Logo" style="height:60px;object-fit:contain;border-radius:10px;border:2px solid var(--card-border);padding:4px;background:var(--card-bg);" onerror="this.src='data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='">
+                    <div>
+                      <input type="file" id="sLogo" accept="image/*" class="form-control-custom" style="margin-bottom:6px;">
+                      <small style="color:var(--text-muted);font-size:11px;">Upload PNG/JPG logo (recommended: 200×200px). Shown on invoices &amp; sidebar.</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <label class="form-label-custom"><i class="bi bi-pen me-1"></i>Authorized Signature</label>
+                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px;">
+                    <img id="sigPreview" src="" alt="Signature" style="height:55px;object-fit:contain;border-radius:10px;border:2px solid var(--card-border);padding:4px;background:var(--card-bg);display:none;">
+                    <div style="flex:1;">
+                      <input type="file" id="sSig" accept="image/*" class="form-control-custom" style="margin-bottom:6px;">
+                      <small style="color:var(--text-muted);font-size:11px;">Upload your signature image (PNG with transparent background preferred). Appears bottom-right of every invoice.</small>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn-custom btn-primary-custom"><i class="bi bi-save"></i> Save Settings</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Danger Zone -->
+          <div class="card" style="border-color:var(--danger);">
+            <div class="card-header-custom" style="border-bottom-color:var(--danger);background:var(--danger-light);">
+              <span class="card-title-custom" style="color:var(--danger);"><i class="bi bi-exclamation-triangle"></i> Danger Zone</span>
+            </div>
+            <div class="card-body-custom">
+              <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;">These actions are irreversible. Please proceed with caution.</p>
+              <div class="d-flex gap-3 flex-wrap">
+                <button class="btn-custom btn-danger-custom" onclick="clearData('bills_invoices')"><i class="bi bi-trash"></i> Clear All Invoices</button>
+                <button class="btn-custom btn-danger-custom" onclick="clearData('bills_customers')"><i class="bi bi-trash"></i> Clear All Customers</button>
+                <button class="btn-custom btn-danger-custom" onclick="resetAll()"><i class="bi bi-arrow-counterclockwise"></i> Factory Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key-Value Settings Preview -->
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-sliders"></i> Current Config</span></div>
+            <div class="card-body-custom" id="configPreview"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+  document.getElementById('collapseBtn') && (document.getElementById('collapseBtn').onclick = () => { document.querySelector('.sidebar').classList.toggle('collapsed'); document.querySelector('.main-content').classList.toggle('expanded'); });
+  const s = Store.get('settings', {});
+  if (s.shopName) document.getElementById('sShopName').value = s.shopName;
+  if (s.upiId) document.getElementById('sUpi').value = s.upiId;
+  if (s.phone) document.getElementById('sPhone').value = s.phone;
+  if (s.email) document.getElementById('sEmail').value = s.email;
+  if (s.address) document.getElementById('sAddress').value = s.address;
+  if (s.gst) document.getElementById('sGst').value = s.gst;
+  if (s.invoicePrefix) document.getElementById('sPrefix').value = s.invoicePrefix;
+  if (s.taxRate)    document.getElementById('sTax').value = s.taxRate;
+  if (s.monthlyTarget) document.getElementById('sTarget').value = s.monthlyTarget;
+  if (s.currency)   document.getElementById('sCurrency').value = s.currency;
+  if (s.invoiceNote) document.getElementById('sNote').value = s.invoiceNote;
+  if (s.whatsapp)   document.getElementById('sWhatsapp').value = s.whatsapp;
+  if (s.logo) document.getElementById('logoPreview').src = s.logo;
+  if (s.signature) { const sp = document.getElementById('sigPreview'); sp.src = s.signature; sp.style.display = 'block'; }
+
+  // Logo file -> base64 preview
+  document.getElementById('sLogo').addEventListener('change', function () {
+    const file = this.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => { document.getElementById('logoPreview').src = e.target.result; };
+    reader.readAsDataURL(file);
+  });
+  // Signature file -> base64 preview
+  document.getElementById('sSig').addEventListener('change', function () {
+    const file = this.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => { const sp = document.getElementById('sigPreview'); sp.src = e.target.result; sp.style.display = 'block'; };
+    reader.readAsDataURL(file);
+  });
+
+  showPreview(s);
+});
+
+function saveSettings(e) {
+  e.preventDefault();
+  const existing = Store.get('settings', {});
+
+  function doSave(logoData, sigData) {
+    const s = Object.assign({}, existing, {
+      shopName: document.getElementById('sShopName').value.trim(),
+      upiId: document.getElementById('sUpi').value.trim(),
+      phone: document.getElementById('sPhone').value.trim(),
+      email: document.getElementById('sEmail').value.trim(),
+      address: document.getElementById('sAddress').value.trim(),
+      gst: document.getElementById('sGst').value.trim(),
+      invoicePrefix: document.getElementById('sPrefix').value.trim(),
+      taxRate: parseFloat(document.getElementById('sTax').value)||0,
+      monthlyTarget: parseFloat(document.getElementById('sTarget').value)||50000,
+      currency: document.getElementById('sCurrency').value.trim()||'₹',
+      invoiceNote: document.getElementById('sNote').value.trim(),
+      whatsapp: document.getElementById('sWhatsapp').value.trim(),
+      logo: logoData || existing.logo || '../assets/img/logo.png',
+      signature: sigData || existing.signature || '',
+    });
+    Store.set('settings', s);
+    showPreview(s);
+    Utils.toast('Settings saved successfully!');
+  }
+
+  const logoFile = document.getElementById('sLogo').files[0];
+  const sigFile  = document.getElementById('sSig').files[0];
+
+  // Read both files (if any) then save
+  let logoData = null, sigData = null;
+  let pending = (logoFile ? 1 : 0) + (sigFile ? 1 : 0);
+  function checkDone() { if (pending === 0) doSave(logoData, sigData); }
+
+  if (logoFile) {
+    const r = new FileReader();
+    r.onload = e => { logoData = e.target.result; pending--; checkDone(); };
+    r.readAsDataURL(logoFile);
+  }
+  if (sigFile) {
+    const r = new FileReader();
+    r.onload = e => { sigData = e.target.result; pending--; checkDone(); };
+    r.readAsDataURL(sigFile);
+  }
+  if (!logoFile && !sigFile) doSave(null, null);
+}
+
+function showPreview(s) {
+  const rows = [
+    ['Shop Name', s.shopName], ['UPI ID', s.upiId], ['Phone', s.phone],
+    ['Email', s.email], ['GSTIN', s.gst], ['Invoice Prefix', s.invoicePrefix], ['Currency', s.currency || '₹']
+  ];
+  document.getElementById('configPreview').innerHTML = rows.map(([k, v]) =>
+    `<div class="d-flex justify-content-between py-2" style="border-bottom:1px solid var(--card-border);font-size:13px;">
+      <span style="color:var(--text-secondary);">${k}</span>
+      <span style="font-weight:500;">${v || '-'}</span>
+    </div>`).join('');
+}
+
+window.clearData = function (key) {
+  if (!confirm('This will delete all data for ' + key.replace('bills_','') + '. Are you sure?')) return;
+  localStorage.removeItem(key);
+  Utils.toast('Data cleared!', 'danger');
+};
+
+window.resetAll = function () {
+  if (!confirm('FACTORY RESET: All data will be deleted and demo data will reload. Proceed?')) return;
+  Object.keys(localStorage).filter(k => k.startsWith('bills_')).forEach(k => localStorage.removeItem(k));
+  Utils.toast('Factory reset done. Refreshing...', 'warning');
+  setTimeout(() => window.location.reload(), 1500);
+};
+</script>
+</body>
+</html>

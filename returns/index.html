@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Returns — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div><button class="sidebar-collapse-btn" id="collapseBtn"><i class="bi bi-chevron-left"></i></button></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../quotations/index.html" class="nav-link"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../returns/index.html" class="nav-link active"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../purchase-orders/index.html" class="nav-link"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="../backup/index.html" class="nav-link"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v2.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar"><button id="sidebarToggle"><i class="bi bi-list"></i></button></header>
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Dashboard</a><i class="bi bi-chevron-right"></i><span>Returns</span></div>
+          <h1 class="page-title">Returns / Credit Notes</h1>
+          <p class="page-subtitle">Manage product returns and credit requests from customers</p>
+        </div>
+        <button class="btn-custom btn-primary-custom" onclick="openAdd()"><i class="bi bi-plus-lg"></i> New Return</button>
+      </div>
+
+      <div class="row g-3 mb-4" id="retStats"></div>
+
+      <div class="card">
+        <div class="card-header-custom">
+          <span class="card-title-custom"><i class="bi bi-arrow-return-left"></i> All Returns</span>
+          <div class="search-bar"><i class="bi bi-search"></i><input id="searchInput" class="form-control-custom" placeholder="Search..." style="width:200px;"></div>
+        </div>
+        <div class="table-wrapper">
+          <table class="table-custom">
+            <thead><tr><th>Return ID</th><th>Invoice</th><th>Customer</th><th>Date</th><th>Amount</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="retBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal-overlay" id="retModal">
+  <div class="modal-box" style="max-width:520px;">
+    <h3 class="modal-title"><i class="bi bi-arrow-return-left me-2"></i>New Return Request</h3>
+    <div style="display:grid;gap:12px;">
+      <div><label class="form-label-custom">Invoice ID *</label><input id="rInvoice" class="form-control-custom" placeholder="e.g. INV-003"></div>
+      <div><label class="form-label-custom">Customer Name *</label><input id="rCustomer" class="form-control-custom" placeholder="Customer name"></div>
+      <div><label class="form-label-custom">Return Amount (₹) *</label><input type="number" id="rAmount" class="form-control-custom" placeholder="0"></div>
+      <div><label class="form-label-custom">Reason *</label><textarea id="rReason" class="form-control-custom" placeholder="Why is the return being made?"></textarea></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button onclick="saveReturn()" class="btn-custom btn-primary-custom" style="flex:1;"><i class="bi bi-check-lg"></i> Submit Return</button>
+      <button onclick="closeModal()" class="btn-custom btn-outline-custom">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+  renderPage(); initTableSearch('searchInput','retBody');
+  document.getElementById('collapseBtn').onclick = () => { document.querySelector('.sidebar').classList.toggle('collapsed'); document.querySelector('.main-content').classList.toggle('expanded'); };
+});
+function renderPage() {
+  const rets = Store.get('returns', []);
+  const approved = rets.filter(r => r.status === 'Approved');
+  const totalRefund = approved.reduce((s, r) => s + r.amount, 0);
+  document.getElementById('retStats').innerHTML = `
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-orange"><i class="bi bi-arrow-return-left"></i></div><div class="stat-info"><div class="stat-value">${rets.length}</div><div class="stat-label">Total Returns</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-red"><i class="bi bi-currency-rupee"></i></div><div class="stat-info"><div class="stat-value">${Utils.currency(totalRefund)}</div><div class="stat-label">Total Refunded</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-yellow"><i class="bi bi-hourglass"></i></div><div class="stat-info"><div class="stat-value">${rets.filter(r=>r.status==='Pending').length}</div><div class="stat-label">Pending Approval</div></div></div></div>`;
+  document.getElementById('retBody').innerHTML = rets.length ? rets.map(r => `
+    <tr>
+      <td class="fw-bold text-primary-color">${r.id}</td>
+      <td><a href="../invoices/view.html?id=${r.invoiceId}" style="color:var(--primary);">${r.invoiceId}</a></td>
+      <td>${r.customerName}</td>
+      <td class="text-sm text-muted-c">${Utils.formatDate(r.date)}</td>
+      <td class="fw-bold text-danger">${Utils.currency(r.amount)}</td>
+      <td style="max-width:200px;font-size:12.5px;">${r.reason||'—'}</td>
+      <td>${Utils.statusBadge(r.status)}</td>
+      <td>
+        ${r.status==='Pending'?`<button onclick="approveReturn('${r.id}')" class="btn-icon btn-view" title="Approve"><i class="bi bi-check-circle"></i></button>
+        <button onclick="rejectReturn('${r.id}')" class="btn-icon btn-del" title="Reject"><i class="bi bi-x-circle"></i></button>`:''}
+      </td>
+    </tr>`).join('') : '<tr><td colspan="8"><div class="empty-state"><i class="bi bi-arrow-return-left"></i><h3>No returns yet</h3></div></td></tr>';
+}
+function openAdd() { ['rInvoice','rCustomer','rReason'].forEach(id=>document.getElementById(id).value=''); document.getElementById('rAmount').value=''; document.getElementById('retModal').classList.add('show'); }
+function saveReturn() {
+  const inv=document.getElementById('rInvoice').value.trim(), cust=document.getElementById('rCustomer').value.trim(), amt=parseFloat(document.getElementById('rAmount').value)||0, reason=document.getElementById('rReason').value.trim();
+  if(!inv||!cust||!amt){Utils.toast('All fields required','error');return;}
+  const rets=Store.get('returns',[]);
+  rets.push({id:Utils.generateId('RET-',rets),invoiceId:inv,customerId:'',customerName:cust,date:Utils.today(),items:[],reason,amount:amt,status:'Pending'});
+  Store.set('returns',rets);ActivityLog.push(`Return request submitted for invoice ${inv}`);closeModal();renderPage();Utils.toast('Return submitted!');
+}
+function approveReturn(id) {
+  const rets=Store.get('returns',[]),r=rets.find(x=>x.id===id);if(!r)return;
+  r.status='Approved';Store.set('returns',rets);ActivityLog.push(`Return ${id} approved ₹${r.amount}`);renderPage();Utils.toast('Return approved!');
+}
+function rejectReturn(id) {
+  const rets=Store.get('returns',[]),r=rets.find(x=>x.id===id);if(!r)return;
+  r.status='Rejected';Store.set('returns',rets);renderPage();Utils.toast('Return rejected.','warning');
+}
+function closeModal(){document.getElementById('retModal').classList.remove('show');}
+document.getElementById('retModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+</script>
+</body>
+</html>

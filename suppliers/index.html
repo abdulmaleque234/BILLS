@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suppliers — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div>
+      <div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div>
+      <button class="sidebar-collapse-btn" id="collapseBtn"><i class="bi bi-chevron-left"></i></button>
+    </div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../suppliers/index.html" class="nav-link active"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../quotations/index.html" class="nav-link"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../purchase-orders/index.html" class="nav-link"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="../backup/index.html" class="nav-link"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v2.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar"><button id="sidebarToggle"><i class="bi bi-list"></i></button></header>
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Dashboard</a><i class="bi bi-chevron-right"></i><span>Suppliers</span></div>
+          <h1 class="page-title">Suppliers</h1>
+          <p class="page-subtitle">Manage your product suppliers and purchase contacts</p>
+        </div>
+        <button class="btn-custom btn-primary-custom" onclick="openAddModal()"><i class="bi bi-plus-lg"></i> Add Supplier</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="row g-3 mb-4" id="supStats"></div>
+
+      <!-- Table -->
+      <div class="card">
+        <div class="card-header-custom">
+          <span class="card-title-custom"><i class="bi bi-truck"></i> All Suppliers</span>
+          <div class="search-bar"><i class="bi bi-search"></i><input type="text" id="searchInput" class="form-control-custom" placeholder="Search suppliers..." style="width:220px;"></div>
+        </div>
+        <div class="table-wrapper">
+          <table class="table-custom">
+            <thead><tr><th>ID</th><th>Name</th><th>Contact</th><th>Phone</th><th>GSTIN</th><th>Balance</th><th>Actions</th></tr></thead>
+            <tbody id="supplierBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="supplierModal">
+  <div class="modal-box" style="max-width:560px;">
+    <h3 class="modal-title" id="modalTitle"><i class="bi bi-truck me-2"></i>Add Supplier</h3>
+    <div class="form-row form-row-2" style="gap:12px;">
+      <div><label class="form-label-custom">Supplier Name *</label><input type="text" id="sName" class="form-control-custom" placeholder="Business name"></div>
+      <div><label class="form-label-custom">Contact Person</label><input type="text" id="sContact" class="form-control-custom" placeholder="Person name"></div>
+      <div><label class="form-label-custom">Phone</label><input type="text" id="sPhone" class="form-control-custom" placeholder="10-digit number"></div>
+      <div><label class="form-label-custom">Email</label><input type="email" id="sEmail" class="form-control-custom" placeholder="email@example.com"></div>
+      <div class="col-span-2" style="grid-column:1/-1;"><label class="form-label-custom">Address</label><input type="text" id="sAddress" class="form-control-custom" placeholder="Full address"></div>
+      <div><label class="form-label-custom">GSTIN</label><input type="text" id="sGstin" class="form-control-custom" placeholder="GST number"></div>
+      <div><label class="form-label-custom">Opening Balance (₹)</label><input type="number" id="sBalance" class="form-control-custom" placeholder="0" value="0"></div>
+    </div>
+    <input type="hidden" id="sEditId">
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button onclick="saveSupplier()" class="btn-custom btn-primary-custom" style="flex:1;"><i class="bi bi-check-lg"></i> Save Supplier</button>
+      <button onclick="closeModal()" class="btn-custom btn-outline-custom">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+  renderPage();
+  initTableSearch('searchInput','supplierBody');
+  document.getElementById('collapseBtn').onclick = () => {
+    document.querySelector('.sidebar').classList.toggle('collapsed');
+    document.querySelector('.main-content').classList.toggle('expanded');
+  };
+});
+
+function renderPage() {
+  const suppliers = Store.get('suppliers', []);
+  const totalBalance = suppliers.reduce((s, x) => s + (x.balance||0), 0);
+  document.getElementById('supStats').innerHTML = `
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-blue"><i class="bi bi-truck"></i></div><div class="stat-info"><div class="stat-value">${suppliers.length}</div><div class="stat-label">Total Suppliers</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-red"><i class="bi bi-wallet2"></i></div><div class="stat-info"><div class="stat-value">${Utils.currency(totalBalance)}</div><div class="stat-label">Total Payable</div></div></div></div>`;
+
+  document.getElementById('supplierBody').innerHTML = suppliers.length ? suppliers.map(s => `
+    <tr>
+      <td><span class="fw-bold text-primary-color">${s.id}</span></td>
+      <td><div class="fw-semibold">${s.name}</div><div class="text-sm text-muted-c">${s.contact||''}</div></td>
+      <td>${s.email||'—'}</td>
+      <td>${s.phone||'—'}</td>
+      <td><span style="font-family:monospace;font-size:12px;">${s.gstin||'—'}</span></td>
+      <td class="${s.balance>0?'fw-bold':''}"><span style="color:${s.balance>0?'var(--danger)':'var(--success)'};">${Utils.currency(s.balance||0)}</span></td>
+      <td>
+        <button onclick="editSupplier('${s.id}')" class="btn-icon btn-edit" title="Edit"><i class="bi bi-pencil"></i></button>
+        <button onclick="deleteSupplier('${s.id}')" class="btn-icon btn-del" title="Delete"><i class="bi bi-trash"></i></button>
+      </td>
+    </tr>`).join('') : '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-truck"></i><h3>No suppliers yet</h3><p>Add your first supplier to get started.</p></div></td></tr>';
+}
+
+function openAddModal() {
+  document.getElementById('modalTitle').innerHTML = '<i class="bi bi-truck me-2"></i>Add Supplier';
+  ['sName','sContact','sPhone','sEmail','sAddress','sGstin'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('sBalance').value = '0';
+  document.getElementById('sEditId').value = '';
+  document.getElementById('supplierModal').classList.add('show');
+}
+
+function editSupplier(id) {
+  const s = Store.get('suppliers', []).find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('modalTitle').innerHTML = '<i class="bi bi-pencil me-2"></i>Edit Supplier';
+  document.getElementById('sName').value    = s.name||'';
+  document.getElementById('sContact').value = s.contact||'';
+  document.getElementById('sPhone').value   = s.phone||'';
+  document.getElementById('sEmail').value   = s.email||'';
+  document.getElementById('sAddress').value = s.address||'';
+  document.getElementById('sGstin').value   = s.gstin||'';
+  document.getElementById('sBalance').value = s.balance||0;
+  document.getElementById('sEditId').value  = id;
+  document.getElementById('supplierModal').classList.add('show');
+}
+
+function saveSupplier() {
+  const name = document.getElementById('sName').value.trim();
+  if (!name) { Utils.toast('Supplier name is required', 'error'); return; }
+  const editId = document.getElementById('sEditId').value;
+  const suppliers = Store.get('suppliers', []);
+  const obj = {
+    id: editId || Utils.generateId('SUP', suppliers),
+    name, contact: document.getElementById('sContact').value,
+    phone: document.getElementById('sPhone').value,
+    email: document.getElementById('sEmail').value,
+    address: document.getElementById('sAddress').value,
+    gstin: document.getElementById('sGstin').value,
+    balance: parseFloat(document.getElementById('sBalance').value)||0,
+    created: editId ? (suppliers.find(s=>s.id===editId)||{}).created : Utils.today()
+  };
+  if (editId) {
+    const idx = suppliers.findIndex(s => s.id === editId);
+    suppliers[idx] = obj;
+    ActivityLog.push(`Updated supplier ${obj.name}`);
+  } else {
+    suppliers.push(obj);
+    ActivityLog.push(`Added supplier ${obj.name}`);
+  }
+  Store.set('suppliers', suppliers);
+  closeModal(); renderPage();
+  Utils.toast(`Supplier ${editId ? 'updated' : 'added'} successfully!`);
+}
+
+function deleteSupplier(id) {
+  if (!confirmDelete('Delete this supplier?')) return;
+  const suppliers = Store.get('suppliers', []).filter(s => s.id !== id);
+  Store.set('suppliers', suppliers);
+  ActivityLog.push(`Deleted supplier ID ${id}`);
+  renderPage(); Utils.toast('Supplier deleted.', 'warning');
+}
+
+function closeModal() { document.getElementById('supplierModal').classList.remove('show'); }
+document.getElementById('supplierModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+</script>
+</body>
+</html>

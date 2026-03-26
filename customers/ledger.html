@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Ledger — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" media="print" onload="this.media='all'">
+</head>
+<body>
+<div class="app-wrapper">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div>
+      <div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div>
+    </div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link active"><i class="bi bi-people"></i> Customers</a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i> Products</a></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i> Invoices</a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i> Payments</a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i> Expenses</a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i> Reports</a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i> Reminders</a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i> Activity Log</a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i> Settings</a></li>
+      <li class="nav-item"><a href="../profile.html" class="nav-link"><i class="bi bi-person-circle"></i> Profile</a></li>
+    </ul></nav>
+    <div class="sidebar-footer">Bills v1.0 &copy; 2025</div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <button id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <span class="topbar-title" id="ledgerTitle">Customer Ledger</span>
+      <div class="topbar-actions">
+        <button class="btn-custom btn-outline-custom no-print" onclick="window.print()"><i class="bi bi-printer"></i> Print</button>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header no-print">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Home</a><i class="bi bi-chevron-right"></i><a href="./index.html">Customers</a><i class="bi bi-chevron-right"></i><span>Ledger</span></div>
+          <h1 class="page-title">Account Ledger</h1>
+        </div>
+        <a href="./index.html" class="btn-custom btn-outline-custom no-print"><i class="bi bi-arrow-left"></i> Back</a>
+      </div>
+
+      <!-- Customer Card -->
+      <div class="card mb-4">
+        <div class="card-body-custom">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div>
+              <div style="font-size:20px;font-weight:700;" id="ledgerCustName">-</div>
+              <div style="font-size:13px;color:var(--text-secondary);" id="ledgerCustInfo">-</div>
+            </div>
+            <div class="d-flex gap-4">
+              <div class="text-center">
+                <div style="font-size:11px;color:var(--text-muted)">Total Invoiced</div>
+                <div id="ledgerTotal" style="font-size:18px;font-weight:700;color:var(--primary)">₹0</div>
+              </div>
+              <div class="text-center">
+                <div style="font-size:11px;color:var(--text-muted)">Total Paid</div>
+                <div id="ledgerPaid" style="font-size:18px;font-weight:700;color:var(--success)">₹0</div>
+              </div>
+              <div class="text-center">
+                <div style="font-size:11px;color:var(--text-muted)">Balance Due</div>
+                <div id="ledgerDue" style="font-size:18px;font-weight:700;color:var(--danger)">₹0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ledger Table -->
+      <div class="card">
+        <div class="card-header-custom">
+          <span class="card-title-custom"><i class="bi bi-journal-text"></i> Transaction Ledger</span>
+        </div>
+        <div class="table-wrapper">
+          <table class="table-custom">
+            <thead>
+              <tr><th>Date</th><th>Description</th><th>Invoice #</th><th>Debit (Invoice)</th><th>Credit (Payment)</th><th>Balance</th><th>Status</th></tr>
+            </thead>
+            <tbody id="ledgerBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script defer src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') window.location.href = '../login.html';
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  const customers = Store.get('customers', []);
+  const customer = customers.find(c => c.id === id);
+
+  if (!customer) {
+    document.getElementById('ledgerTitle').textContent = 'Customer Not Found';
+    return;
+  }
+
+  document.getElementById('ledgerTitle').textContent = customer.name + ' — Ledger';
+  document.getElementById('ledgerCustName').textContent = customer.name;
+  document.getElementById('ledgerCustInfo').textContent = 'Phone: ' + customer.phone + ' | ' + (customer.email || 'No email');
+
+  const invoices = Store.get('invoices', []).filter(i => i.customerId === id);
+  let runningBalance = 0;
+  let totalInvoiced = 0;
+  let totalPaid = 0;
+  const rows = [];
+
+  invoices.forEach(inv => {
+    // Debit row (invoice)
+    runningBalance += inv.total;
+    totalInvoiced += inv.total;
+    rows.push({
+      date: inv.date,
+      desc: 'Invoice raised',
+      invId: inv.id,
+      debit: inv.total,
+      credit: 0,
+      balance: runningBalance,
+      status: inv.status
+    });
+    // Credit row (payment if any)
+    if (inv.paid > 0) {
+      runningBalance -= inv.paid;
+      totalPaid += inv.paid;
+      rows.push({
+        date: inv.date,
+        desc: 'Payment received',
+        invId: inv.id,
+        debit: 0,
+        credit: inv.paid,
+        balance: runningBalance,
+        status: 'Paid'
+      });
+    }
+  });
+
+  document.getElementById('ledgerTotal').textContent = Utils.currency(totalInvoiced);
+  document.getElementById('ledgerPaid').textContent = Utils.currency(totalPaid);
+  document.getElementById('ledgerDue').textContent = Utils.currency(totalInvoiced - totalPaid);
+
+  document.getElementById('ledgerBody').innerHTML = rows.length === 0
+    ? '<tr><td colspan="7" class="text-center py-4 text-muted">No transactions found</td></tr>'
+    : rows.map(r => `
+      <tr>
+        <td>${Utils.formatDate(r.date)}</td>
+        <td>${r.desc}</td>
+        <td><a href="../invoices/view.html?id=${r.invId}" style="color:var(--primary);font-weight:600;">${r.invId}</a></td>
+        <td style="color:var(--danger)">${r.debit > 0 ? Utils.currency(r.debit) : '-'}</td>
+        <td style="color:var(--success)">${r.credit > 0 ? Utils.currency(r.credit) : '-'}</td>
+        <td style="font-weight:600;">${Utils.currency(Math.abs(r.balance))}${r.balance > 0 ? ' <small style="color:var(--danger)">(Due)</small>' : ''}</td>
+        <td>${Utils.statusBadge(r.status)}</td>
+      </tr>`).join('');
+});
+</script>
+</body>
+</html>

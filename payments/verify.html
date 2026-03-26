@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify Payment — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" media="print" onload="this.media='all'">
+</head>
+<body>
+<div class="app-wrapper">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div>
+      <div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div>
+    </div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i> Customers</a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i> Products</a></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i> Invoices</a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link active"><i class="bi bi-credit-card"></i> Payments</a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i> Expenses</a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i> Reports</a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i> Reminders</a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i> Activity Log</a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i> Settings</a></li>
+      <li class="nav-item"><a href="../profile.html" class="nav-link"><i class="bi bi-person-circle"></i> Profile</a></li>
+    </ul></nav>
+    <div class="sidebar-footer">Bills v1.0 &copy; 2025</div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <button id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <span class="topbar-title">Payment Verification</span>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Home</a><i class="bi bi-chevron-right"></i><a href="./index.html">Payments</a><i class="bi bi-chevron-right"></i><span>Verify</span></div>
+          <h1 class="page-title">Payment Verification</h1>
+          <p class="page-subtitle">Review and verify pending/partial invoices</p>
+        </div>
+        <a href="./index.html" class="btn-custom btn-outline-custom"><i class="bi bi-arrow-left"></i> Back to Payments</a>
+      </div>
+
+      <!-- Pending Invoices -->
+      <div class="card">
+        <div class="card-header-custom">
+          <span class="card-title-custom"><i class="bi bi-exclamation-circle"></i> Pending / Partial Invoices</span>
+          <span id="pendingCount" class="badge-custom badge-danger">0</span>
+        </div>
+        <div class="table-wrapper">
+          <table class="table-custom">
+            <thead><tr><th>#Invoice</th><th>Customer</th><th>Date</th><th>Total</th><th>Paid</th><th>Due</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="pendingBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Invoice Detail (if ?invoice=xxx) -->
+      <div id="invoiceDetailCard" class="card mt-4" style="display:none;">
+        <div class="card-header-custom">
+          <span class="card-title-custom"><i class="bi bi-receipt"></i> Invoice Details</span>
+        </div>
+        <div class="card-body-custom" id="invoiceDetailBody"></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+<script defer src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') window.location.href = '../login.html';
+
+  const params = new URLSearchParams(window.location.search);
+  const focusId = params.get('invoice');
+
+  function renderPending() {
+    const invoices = Store.get('invoices', []).filter(i => i.status !== 'Paid');
+    document.getElementById('pendingCount').textContent = invoices.length;
+
+    document.getElementById('pendingBody').innerHTML = invoices.length === 0
+      ? '<tr><td colspan="8"><div class="empty-state"><i class="bi bi-check-circle"></i><p>All invoices are paid!</p></div></td></tr>'
+      : invoices.map(inv => `
+        <tr ${focusId === inv.id ? 'style="background:var(--primary-light);"' : ''}>
+          <td><a href="../invoices/view.html?id=${inv.id}" style="color:var(--primary);font-weight:600;">${inv.id}</a></td>
+          <td>${inv.customerName}</td>
+          <td>${Utils.formatDate(inv.date)}</td>
+          <td>${Utils.currency(inv.total)}</td>
+          <td style="color:var(--success)">${Utils.currency(inv.paid)}</td>
+          <td style="color:var(--danger);font-weight:700;">${Utils.currency(inv.total - inv.paid)}</td>
+          <td>${Utils.statusBadge(inv.status)}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <button class="btn-custom btn-success-custom" style="padding:5px 10px;font-size:12px;" onclick="markAsPaid('${inv.id}')"><i class="bi bi-check"></i> Mark Paid</button>
+              <a href="../invoices/view.html?id=${inv.id}" class="btn-icon"><i class="bi bi-eye"></i></a>
+            </div>
+          </td>
+        </tr>`).join('');
+  }
+
+  window.markAsPaid = function (id) {
+    if (!confirm('Mark invoice ' + id + ' as fully paid?')) return;
+    const invoices = Store.get('invoices', []);
+    const idx = invoices.findIndex(i => i.id === id);
+    if (idx > -1) {
+      invoices[idx].paid = invoices[idx].total;
+      invoices[idx].status = 'Paid';
+      Store.set('invoices', invoices);
+
+      // Add payment record
+      const payments = Store.get('payments', []);
+      payments.push({ id: Utils.generateId('PAY-', payments), invoice: id, customer: invoices[idx].customerName, amount: invoices[idx].total, method: 'Cash', date: new Date().toISOString().split('T')[0], status: 'Verified' });
+      Store.set('payments', payments);
+
+      const activity = Store.get('activity', []);
+      activity.unshift({ user: 'Admin', action: `Marked ${id} as Paid`, date: new Date().toLocaleString('en-IN') });
+      Store.set('activity', activity);
+
+      renderPending();
+      Utils.toast('Invoice marked as paid!');
+    }
+  };
+
+  renderPending();
+
+  // Show focused invoice detail
+  if (focusId) {
+    const inv = Store.get('invoices', []).find(i => i.id === focusId);
+    if (inv) {
+      document.getElementById('invoiceDetailCard').style.display = 'block';
+      document.getElementById('invoiceDetailBody').innerHTML = `
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div style="font-size:13px;line-height:2;color:var(--text-secondary);">
+              <div><strong style="color:var(--text-primary);">Invoice:</strong> ${inv.id}</div>
+              <div><strong style="color:var(--text-primary);">Customer:</strong> ${inv.customerName}</div>
+              <div><strong style="color:var(--text-primary);">Date:</strong> ${Utils.formatDate(inv.date)}</div>
+              <div><strong style="color:var(--text-primary);">Due Date:</strong> ${Utils.formatDate(inv.dueDate)}</div>
+              <div><strong style="color:var(--text-primary);">Status:</strong> ${Utils.statusBadge(inv.status)}</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="invoice-summary-box">
+              <div class="invoice-summary-row"><span>Total Amount</span><span>${Utils.currency(inv.total)}</span></div>
+              <div class="invoice-summary-row"><span style="color:var(--success)">Paid</span><span style="color:var(--success)">${Utils.currency(inv.paid)}</span></div>
+              <div class="invoice-summary-row total-row"><span style="color:var(--danger)">Balance Due</span><span style="color:var(--danger)">${Utils.currency(inv.total - inv.paid)}</span></div>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn-custom btn-success-custom flex-fill justify-content-center" onclick="markAsPaid('${inv.id}')"><i class="bi bi-check-circle"></i> Mark as Paid</button>
+              <a href="../invoices/view.html?id=${inv.id}" class="btn-custom btn-outline-custom flex-fill justify-content-center"><i class="bi bi-eye"></i> View Invoice</a>
+            </div>
+          </div>
+        </div>`;
+    }
+  }
+});
+</script>
+</body>
+</html>

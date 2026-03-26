@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="./assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+  .profile-avatar { width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff;margin:0 auto 16px;box-shadow:0 8px 20px rgba(99,102,241,.35); }
+  .profile-stat { text-align:center;padding:12px;background:var(--card-bg);border-radius:12px; }
+  .profile-stat-val { font-size:20px;font-weight:800;color:var(--primary); }
+  .profile-stat-lbl { font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px; }
+</style>
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div><button class="sidebar-collapse-btn" id="collapseBtn"><i class="bi bi-chevron-left"></i></button></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="./index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="./customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="./suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="./products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="./staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="./invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="./quotations/index.html" class="nav-link"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="./payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="./returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="./purchase-orders/index.html" class="nav-link"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="./expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="./reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="./taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="./reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="./activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="./backup/index.html" class="nav-link"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="./settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+      <li class="nav-item"><a href="./profile.html" class="nav-link active"><i class="bi bi-person-circle"></i><span class="nav-label-text">Profile</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v2.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <button id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <div class="topbar-actions">
+        <a href="./index.html" class="btn-custom btn-outline-custom"><i class="bi bi-arrow-left"></i> Back</a>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="./index.html">Dashboard</a><i class="bi bi-chevron-right"></i><span>Profile</span></div>
+          <h1 class="page-title">Admin Profile</h1>
+          <p class="page-subtitle">Manage your account details and password</p>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Left: Avatar card -->
+        <div class="col-md-4">
+          <div class="card" style="text-align:center;padding:28px 20px;">
+            <div class="profile-avatar" id="profileAvatar">A</div>
+            <h2 style="font-size:18px;font-weight:700;" id="profileDisplayName">Admin</h2>
+            <p style="font-size:13px;color:var(--text-secondary);" id="profileRole">Owner</p>
+            <hr>
+            <div class="row g-2 mb-3">
+              <div class="col-6"><div class="profile-stat"><div class="profile-stat-val" id="statInvoices">0</div><div class="profile-stat-lbl">Invoices</div></div></div>
+              <div class="col-6"><div class="profile-stat"><div class="profile-stat-val" id="statCustomers">0</div><div class="profile-stat-lbl">Customers</div></div></div>
+            </div>
+            <div class="info-box info" style="font-size:12px;margin-bottom:14px;">
+              <i class="bi bi-clock"></i> Last login: <strong id="lastLogin">Today</strong>
+            </div>
+            <button class="btn-custom btn-danger-custom w-100 justify-content-center" onclick="logout()">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Edit forms -->
+        <div class="col-md-8">
+          <div class="card mb-3">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-person"></i> Account Information</span></div>
+            <div class="card-body-custom">
+              <form id="profileForm" onsubmit="saveProfile(event)">
+                <div class="form-row form-row-2 mb-3">
+                  <div>
+                    <label class="form-label-custom">Full Name <span class="text-danger">*</span></label>
+                    <input class="form-control-custom" id="pName" placeholder="Your name" required>
+                  </div>
+                  <div>
+                    <label class="form-label-custom">Phone</label>
+                    <input class="form-control-custom" id="pPhone" placeholder="10-digit phone">
+                  </div>
+                </div>
+                <div class="form-row form-row-2 mb-3">
+                  <div>
+                    <label class="form-label-custom">Email</label>
+                    <input type="email" class="form-control-custom" id="pEmail" placeholder="your@email.com">
+                  </div>
+                  <div>
+                    <label class="form-label-custom">UPI ID</label>
+                    <input class="form-control-custom" id="pUpi" placeholder="name@bank">
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label-custom">Shop / Business Name</label>
+                  <input class="form-control-custom" id="pShopName" placeholder="Shop name">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label-custom">Address</label>
+                  <textarea class="form-control-custom" id="pAddress" rows="2" placeholder="Business address"></textarea>
+                </div>
+                <button type="submit" class="btn-custom btn-primary-custom"><i class="bi bi-save"></i> Save Changes</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-lock"></i> Change Password</span></div>
+            <div class="card-body-custom">
+              <form onsubmit="changePass(event)">
+                <div class="mb-3">
+                  <label class="form-label-custom">Current Password</label>
+                  <input type="password" class="form-control-custom" id="curPass" placeholder="Enter current password">
+                </div>
+                <div class="form-row form-row-2 mb-3">
+                  <div>
+                    <label class="form-label-custom">New Password</label>
+                    <input type="password" class="form-control-custom" id="newPass" placeholder="Minimum 6 characters">
+                  </div>
+                  <div>
+                    <label class="form-label-custom">Confirm Password</label>
+                    <input type="password" class="form-control-custom" id="confPass" placeholder="Repeat new password">
+                  </div>
+                </div>
+                <button type="submit" class="btn-custom btn-success-custom"><i class="bi bi-shield-check"></i> Update Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="./assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = './login.html'; return; }
+  document.getElementById('collapseBtn').onclick = () => { document.querySelector('.sidebar').classList.toggle('collapsed'); document.querySelector('.main-content').classList.toggle('expanded'); };
+
+  // Load saved data into form
+  const s = Store.get('settings', {});
+  document.getElementById('pName').value      = s.ownerName   || '';
+  document.getElementById('pPhone').value     = s.phone        || '';
+  document.getElementById('pEmail').value     = s.email        || '';
+  document.getElementById('pUpi').value       = s.upiId        || '';
+  document.getElementById('pShopName').value  = s.shopName     || '';
+  document.getElementById('pAddress').value   = s.address      || '';
+
+  // Update avatar display
+  const name = s.ownerName || 'Admin';
+  document.getElementById('profileAvatar').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('profileDisplayName').textContent = name;
+
+  // Stats
+  document.getElementById('statInvoices').textContent  = Store.get('invoices', []).length;
+  document.getElementById('statCustomers').textContent = Store.get('customers', []).length;
+
+  // Last login
+  const lastLogin = localStorage.getItem('bills_lastLogin');
+  if (lastLogin) document.getElementById('lastLogin').textContent = lastLogin;
+  localStorage.setItem('bills_lastLogin', new Date().toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}));
+});
+
+function saveProfile(e) {
+  e.preventDefault();
+  // Read settings and update only the profile fields (preserve all other settings)
+  const s = Store.get('settings', {});
+  s.ownerName = document.getElementById('pName').value.trim();
+  s.phone     = document.getElementById('pPhone').value.trim();
+  s.email     = document.getElementById('pEmail').value.trim();
+  s.upiId     = document.getElementById('pUpi').value.trim();
+  s.shopName  = document.getElementById('pShopName').value.trim();
+  s.address   = document.getElementById('pAddress').value.trim();
+  Store.set('settings', s);
+
+  // Update avatar live
+  const name = s.ownerName || 'Admin';
+  document.getElementById('profileAvatar').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('profileDisplayName').textContent = name;
+
+  ActivityLog.push(`Profile updated: ${name}`);
+  Utils.toast('Profile updated successfully!', 'success');
+}
+
+function changePass(e) {
+  e.preventDefault();
+  const storedPass = localStorage.getItem('bills_password') || 'admin123';
+  const cur  = document.getElementById('curPass').value;
+  const np   = document.getElementById('newPass').value;
+  const cp   = document.getElementById('confPass').value;
+  if (cur !== storedPass) { Utils.toast('Current password is incorrect.', 'error'); return; }
+  if (np !== cp)          { Utils.toast('New passwords do not match.', 'error'); return; }
+  if (np.length < 6)     { Utils.toast('Password must be at least 6 characters.', 'error'); return; }
+  localStorage.setItem('bills_password', np);
+  document.getElementById('curPass').value = '';
+  document.getElementById('newPass').value = '';
+  document.getElementById('confPass').value = '';
+  Utils.toast('Password updated successfully!', 'success');
+}
+
+function logout() {
+  localStorage.removeItem('bills_loggedIn');
+  localStorage.removeItem('bills_rememberMe');
+  window.location.href = './login.html';
+}
+</script>
+</body>
+</html>

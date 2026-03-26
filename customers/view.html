@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Details — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" media="print" onload="this.media='all'">
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<style>
+/* ── Customer Profile Header ── */
+.customer-hero {
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 60%, #24243e 100%);
+  border-radius: var(--border-radius-lg);
+  padding: 28px 28px 24px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 8px 32px rgba(99,102,241,0.25);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.customer-hero::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: rgba(99,102,241,0.18);
+}
+.customer-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -50px; left: 40%;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: rgba(139,92,246,0.12);
+}
+.cust-avatar {
+  width: 72px; height: 72px;
+  border-radius: 20px;
+  background: linear-gradient(135deg,#6366f1,#8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; font-weight: 800; color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 6px 20px rgba(99,102,241,0.5);
+  z-index: 1;
+}
+.cust-hero-info { flex: 1; z-index: 1; }
+.cust-hero-name { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
+.cust-hero-meta {
+  font-size: 13px; color: rgba(255,255,255,0.65);
+  display: flex; gap: 16px; margin-top: 6px; flex-wrap: wrap;
+}
+.cust-hero-meta span { display: flex; align-items: center; gap: 5px; }
+.cust-hero-stats {
+  display: flex; gap: 24px; z-index: 1; flex-wrap: wrap;
+}
+.cust-hero-stat { text-align: center; }
+.cust-hero-stat .val {
+  font-size: 20px; font-weight: 800; display: block;
+}
+.cust-hero-stat .lbl {
+  font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px;
+}
+.cust-hero-stat.billed .val { color: #818cf8; }
+.cust-hero-stat.paid .val   { color: #34d399; }
+.cust-hero-stat.due .val    { color: #f87171; }
+
+/* ── Statement Section ── */
+.section-tabs {
+  display: flex; gap: 4px;
+  background: var(--card-bg2);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 20px;
+}
+.section-tab {
+  flex: 1; text-align: center;
+  padding: 8px 16px; border-radius: 7px;
+  font-size: 13px; font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer; border: none;
+  background: transparent; font-family: var(--font);
+  transition: background 0.15s, color 0.15s;
+}
+.section-tab.active {
+  background: var(--primary); color: #fff;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.3);
+}
+.section-panel { display: none; }
+.section-panel.active { display: block; }
+
+/* Statement rows */
+.stmt-debit td:nth-child(4) { color: var(--danger); font-weight: 600; }
+.stmt-credit td:nth-child(5) { color: var(--success); font-weight: 600; }
+.stmt-running-balance { font-weight: 700; }
+
+/* ── Print Statement Card ── */
+.print-card-wrapper {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+.print-statement-header {
+  background: linear-gradient(135deg,#0f0c29,#302b63);
+  color: #fff;
+  padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.print-shop-info { font-size: 12px; opacity: 0.7; margin-top: 4px; }
+.print-actions {
+  display: flex; gap: 8px; margin-bottom: 16px;
+}
+
+/* ── QR Section ── */
+#qrCanvas { display: block; margin: 0 auto; }
+.qr-wrapper {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px; padding: 16px;
+  background: var(--card-bg2);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--card-border);
+}
+.qr-label { font-size: 12px; color: var(--text-muted); text-align: center; }
+
+/* ── Amount pill ── */
+.amount-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;
+}
+.pill-debit  { background:var(--danger-light);  color:var(--danger);  }
+.pill-credit { background:var(--success-light); color:var(--success); }
+
+/* ── Info list ── */
+.info-list { list-style:none; padding:0; margin:0; }
+.info-list li {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--card-border);
+  font-size: 13.5px;
+}
+.info-list li:last-child { border-bottom: none; }
+.info-list li .lbl {
+  font-weight: 600; color: var(--text-secondary);
+  min-width: 80px; flex-shrink: 0;
+}
+.info-list li .val { color: var(--text-primary); word-break: break-word; }
+
+/* ── Edit / Delete action bar ── */
+.action-bar {
+  display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;
+}
+
+/* ══════════════ PRINT STYLES ══════════════ */
+@media print {
+  .no-print { display: none !important; }
+  .sidebar, .topbar, .page-header, .section-tabs,
+  #panelInvoices, #panelStatement { display: none !important; }
+  #panelPrint { display: block !important; }
+  .main-content { margin-left: 0 !important; }
+  .app-wrapper { display: block !important; }
+  body { background: #fff; }
+  .printable-statement {
+    padding: 0; margin: 0;
+  }
+  .print-topbar-actions { display: none !important; }
+  .ps-header {
+    background: #0f0c29 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* ── Printable Statement ── */
+.printable-statement {
+  font-family: 'Inter', sans-serif;
+}
+.ps-header {
+  background: linear-gradient(135deg,#0f0c29,#302b63);
+  color: #fff;
+  padding: 20px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+.ps-header .shop-name { font-size: 18px; font-weight: 800; }
+.ps-header .shop-sub  { font-size: 11px; opacity: 0.6; margin-top: 2px; }
+.ps-header .stmt-title { text-align: right; }
+.ps-header .stmt-title h3 { font-size: 16px; font-weight: 700; margin: 0; }
+.ps-header .stmt-title p  { font-size: 11px; opacity: 0.6; margin: 3px 0 0; }
+
+.ps-body { padding: 20px 28px; }
+
+.ps-cust-row {
+  display: flex; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--card-border);
+}
+.ps-cust-info h4 { font-size: 16px; font-weight: 700; margin: 0; }
+.ps-cust-info p  { font-size: 12px; color: var(--text-secondary); margin: 3px 0 0; }
+.ps-summary-boxes {
+  display: flex; gap: 14px;
+}
+.ps-sum-box {
+  text-align: center;
+  padding: 10px 18px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--card-border);
+  min-width: 90px;
+}
+.ps-sum-box .sv { font-size: 16px; font-weight: 800; }
+.ps-sum-box .sl { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.ps-sum-box.billed { border-color: var(--primary); }
+.ps-sum-box.billed .sv { color: var(--primary); }
+.ps-sum-box.paid   { border-color: var(--success); }
+.ps-sum-box.paid   .sv { color: var(--success); }
+.ps-sum-box.due    { border-color: var(--danger); }
+.ps-sum-box.due    .sv { color: var(--danger); }
+
+.ps-table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:8px; }
+.ps-table thead th {
+  background: #f0f2f8;
+  font-weight:700; font-size:10.5px; text-transform:uppercase;
+  letter-spacing:0.5px; padding:9px 12px;
+  color: #475569;
+  border-bottom: 2px solid #e5e8ef;
+}
+.ps-table tbody td {
+  padding: 9px 12px; border-bottom: 1px solid #e5e8ef; vertical-align:middle;
+}
+.ps-table tbody tr:last-child td { border-bottom: none; }
+.ps-table .debit  { color: #ef4444; font-weight:600; }
+.ps-table .credit { color: #10b981; font-weight:600; }
+.ps-table .bal    { font-weight:700; }
+
+.ps-footer {
+  margin-top: 20px; padding-top: 16px;
+  border-top: 1px solid var(--card-border);
+  display: flex; justify-content: space-between; align-items: flex-end;
+  flex-wrap: wrap; gap: 12px;
+}
+.ps-footer-note { font-size: 11px; color: var(--text-muted); }
+.ps-qr-section { text-align: center; }
+.ps-qr-section canvas { display: block; margin: 0 auto; border:1px solid #e5e8ef; border-radius:8px; }
+.ps-qr-section p { font-size: 10px; color: var(--text-muted); margin-top:5px; }
+.ps-sig { text-align: right; }
+.ps-sig .sig-line { width: 140px; border-top: 1px solid #475569; margin: 32px auto 0; }
+.ps-sig p { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="app-wrapper">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div>
+      <div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div>
+    </div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link active"><i class="bi bi-people"></i> Customers</a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i> Products</a></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i> Invoices</a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i> Payments</a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i> Expenses</a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i> Reports</a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i> Reminders</a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i> Activity Log</a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i> Settings</a></li>
+      <li class="nav-item"><a href="../profile.html" class="nav-link"><i class="bi bi-person-circle"></i> Profile</a></li>
+    </ul></nav>
+    <div class="sidebar-footer">Bills v1.0 &copy; 2025</div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <button id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <span class="topbar-title" id="topbarTitle">Customer Details</span>
+      <div class="topbar-spacer"></div>
+      <div class="d-flex gap-2 no-print">
+        <button class="btn-custom btn-outline-custom btn-sm" onclick="showTab('print')" title="Print Statement">
+          <i class="bi bi-printer"></i> Print Statement
+        </button>
+        <a href="./index.html" class="btn-custom btn-outline-custom btn-sm"><i class="bi bi-arrow-left"></i> Back</a>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <!-- Breadcrumb -->
+      <div class="breadcrumb-nav no-print mb-3">
+        <a href="../index.html">Home</a><i class="bi bi-chevron-right"></i>
+        <a href="./index.html">Customers</a><i class="bi bi-chevron-right"></i>
+        <span id="breadcrumbName">View</span>
+      </div>
+
+      <!-- ── Customer Hero Card ── -->
+      <div class="customer-hero">
+        <div class="cust-avatar" id="custAvatar">?</div>
+        <div class="cust-hero-info">
+          <div class="cust-hero-name" id="custHeroName">Loading…</div>
+          <div class="cust-hero-meta">
+            <span><i class="bi bi-telephone"></i> <span id="custHeroPhone">—</span></span>
+            <span><i class="bi bi-envelope"></i> <span id="custHeroEmail">—</span></span>
+            <span><i class="bi bi-geo-alt"></i> <span id="custHeroAddr">—</span></span>
+          </div>
+          <div class="action-bar mt-2">
+            <a href="" id="ledgerLink" class="btn-custom btn-sm" style="background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.2);">
+              <i class="bi bi-journal-text"></i> Ledger
+            </a>
+            <a href="../invoices/create.html" class="btn-custom btn-sm" style="background:rgba(99,102,241,0.8);color:#fff;">
+              <i class="bi bi-plus"></i> New Invoice
+            </a>
+            <button onclick="editCustomer()" class="btn-custom btn-sm" style="background:rgba(245,158,11,0.8);color:#fff;border:none;">
+              <i class="bi bi-pencil"></i> Edit
+            </button>
+          </div>
+        </div>
+        <div class="cust-hero-stats no-print">
+          <div class="cust-hero-stat billed">
+            <span class="val" id="heroTotal">₹0</span>
+            <div class="lbl">Total Billed</div>
+          </div>
+          <div class="cust-hero-stat paid">
+            <span class="val" id="heroPaid">₹0</span>
+            <div class="lbl">Total Paid</div>
+          </div>
+          <div class="cust-hero-stat due">
+            <span class="val" id="heroDue">₹0</span>
+            <div class="lbl">Balance Due</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Section Tabs ── -->
+      <div class="section-tabs no-print" id="mainTabs">
+        <button class="section-tab active" onclick="showTab('invoices')"><i class="bi bi-receipt"></i> Invoices</button>
+        <button class="section-tab" onclick="showTab('statement')"><i class="bi bi-journal-bookmark"></i> Credit/Debit Statement</button>
+        <button class="section-tab" onclick="showTab('info')"><i class="bi bi-person-lines-fill"></i> Customer Info</button>
+        <button class="section-tab" onclick="showTab('print')"><i class="bi bi-printer"></i> Print View</button>
+      </div>
+
+      <!-- ═══ PANEL 1: Invoices ═══ -->
+      <div class="section-panel active" id="panelInvoices">
+        <div class="card">
+          <div class="card-header-custom">
+            <span class="card-title-custom"><i class="bi bi-receipt"></i> Invoice History</span>
+            <div class="d-flex gap-2 align-items-center">
+              <span id="invoiceCount" class="badge-custom badge-primary">0 invoices</span>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th>#Invoice</th><th>Date</th><th>Amount</th><th>Paid</th>
+                  <th>Balance</th><th>Status</th><th></th>
+                </tr>
+              </thead>
+              <tbody id="customerInvoicesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL 2: Credit/Debit Statement ═══ -->
+      <div class="section-panel" id="panelStatement">
+        <div class="card">
+          <div class="card-header-custom">
+            <span class="card-title-custom"><i class="bi bi-journal-bookmark"></i> Credit / Debit Statement</span>
+            <div class="d-flex gap-2">
+              <button class="btn-custom btn-outline-custom btn-sm" onclick="showTab('print')">
+                <i class="bi bi-printer"></i> Print
+              </button>
+            </div>
+          </div>
+          <!-- Summary pills -->
+          <div class="card-body-custom pb-0">
+            <div class="row g-3 mb-3">
+              <div class="col-4">
+                <div class="stat-card" style="padding:14px 16px;">
+                  <div class="stat-icon grad-blue" style="width:40px;height:40px;font-size:18px;border-radius:10px;"><i class="bi bi-arrow-up-circle"></i></div>
+                  <div class="stat-info">
+                    <div class="stat-value" id="stmtDebitTotal" style="font-size:18px;">₹0</div>
+                    <div class="stat-label">Total Debit (Invoiced)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="stat-card" style="padding:14px 16px;">
+                  <div class="stat-icon grad-green" style="width:40px;height:40px;font-size:18px;border-radius:10px;"><i class="bi bi-arrow-down-circle"></i></div>
+                  <div class="stat-info">
+                    <div class="stat-value" id="stmtCreditTotal" style="font-size:18px;">₹0</div>
+                    <div class="stat-label">Total Credit (Paid)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="stat-card" style="padding:14px 16px;">
+                  <div class="stat-icon grad-red" style="width:40px;height:40px;font-size:18px;border-radius:10px;"><i class="bi bi-wallet2"></i></div>
+                  <div class="stat-info">
+                    <div class="stat-value" id="stmtBalTotal" style="font-size:18px;">₹0</div>
+                    <div class="stat-label">Net Balance Due</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th>Date</th><th>Description</th><th>Invoice #</th>
+                  <th>Debit (DR)</th><th>Credit (CR)</th>
+                  <th>Running Balance</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="statementBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL 3: Customer Info ═══ -->
+      <div class="section-panel" id="panelInfo">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-header-custom">
+                <span class="card-title-custom"><i class="bi bi-person-badge"></i> Contact Details</span>
+              </div>
+              <div class="card-body-custom">
+                <ul class="info-list" id="contactList">
+                  <li><span class="lbl">ID</span><span class="val" id="infoId">—</span></li>
+                  <li><span class="lbl">Name</span><span class="val" id="infoName">—</span></li>
+                  <li><span class="lbl">Phone</span><span class="val" id="infoPhone">—</span></li>
+                  <li><span class="lbl">Email</span><span class="val" id="infoEmail">—</span></li>
+                  <li><span class="lbl">Address</span><span class="val" id="infoAddr">—</span></li>
+                  <li><span class="lbl">Since</span><span class="val" id="infoSince">—</span></li>
+                  <li><span class="lbl">Notes</span><span class="val" id="infoNotes">—</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header-custom">
+                <span class="card-title-custom"><i class="bi bi-qr-code"></i> Customer QR Code</span>
+              </div>
+              <div class="card-body-custom">
+                <div class="qr-wrapper">
+                  <canvas id="custQrCanvas"></canvas>
+                  <p class="qr-label" id="qrLabel">QR code for this customer's profile</p>
+                </div>
+                <div class="action-bar mt-3">
+                  <button class="btn-custom btn-outline-custom btn-sm" onclick="downloadQR()">
+                    <i class="bi bi-download"></i> Download QR
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL 4: Printable Statement ═══ -->
+      <div class="section-panel" id="panelPrint">
+        <div class="no-print mb-3 d-flex gap-2">
+          <button class="btn-custom btn-primary-custom" onclick="window.print()">
+            <i class="bi bi-printer"></i> Print Now
+          </button>
+          <button class="btn-custom btn-outline-custom" onclick="showTab('statement')">
+            <i class="bi bi-arrow-left"></i> Back
+          </button>
+        </div>
+
+        <!-- Actual printable content -->
+        <div class="printable-statement" id="printArea">
+          <div class="ps-header">
+            <div>
+              <div class="shop-name" id="psShopName">BHAI BHAI COMMUNICATION</div>
+              <div class="shop-sub" id="psShopSub">Account Statement</div>
+            </div>
+            <div class="stmt-title">
+              <h3>Customer Statement</h3>
+              <p id="psDate">—</p>
+            </div>
+          </div>
+
+          <div class="ps-body">
+            <div class="ps-cust-row">
+              <div class="ps-cust-info">
+                <h4 id="psCustName">—</h4>
+                <p id="psCustMeta">—</p>
+              </div>
+              <div class="ps-summary-boxes">
+                <div class="ps-sum-box billed">
+                  <div class="sv" id="psBilled">₹0</div>
+                  <div class="sl">Total Billed</div>
+                </div>
+                <div class="ps-sum-box paid">
+                  <div class="sv" id="psPaid">₹0</div>
+                  <div class="sl">Total Paid</div>
+                </div>
+                <div class="ps-sum-box due">
+                  <div class="sv" id="psDue">₹0</div>
+                  <div class="sl">Balance Due</div>
+                </div>
+              </div>
+            </div>
+
+            <table class="ps-table">
+              <thead>
+                <tr>
+                  <th>#</th><th>Date</th><th>Description</th><th>Invoice</th>
+                  <th>Debit (DR)</th><th>Credit (CR)</th><th>Balance</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="printStatementBody"></tbody>
+            </table>
+
+            <div class="ps-footer">
+              <div>
+                <div class="ps-footer-note">Generated on: <span id="psGenDate">—</span></div>
+                <div class="ps-footer-note">This is a computer-generated statement. No signature required.</div>
+                <div class="ps-qr-section mt-3">
+                  <canvas id="printQrCanvas"></canvas>
+                  <p>Scan to view customer portal</p>
+                </div>
+              </div>
+              <div class="ps-sig">
+                <div class="sig-line"></div>
+                <p>Authorised Signatory</p>
+                <p id="psSigShop">BHAI BHAI COMMUNICATION</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script defer src="../assets/js/app.js"></script>
+<script>
+/* ── Tab switcher ── */
+function showTab(name) {
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+  const tabIdx = { invoices:0, statement:1, info:2, print:3 };
+  const tabs = document.querySelectorAll('.section-tab');
+  if (tabs[tabIdx[name]]) tabs[tabIdx[name]].classList.add('active');
+}
+
+/* ── QR Code generator ── */
+function makeQR(canvasId, text, size) {
+  QRCode.toCanvas(document.getElementById(canvasId), text, {
+    width: size, margin: 2,
+    color: { dark: '#0f0c29', light: '#ffffff' }
+  }, function(err) {});
+}
+
+function downloadQR() {
+  const canvas = document.getElementById('custQrCanvas');
+  const a = document.createElement('a');
+  a.download = 'customer-qr.png';
+  a.href = canvas.toDataURL();
+  a.click();
+}
+
+function editCustomer() {
+  const params = new URLSearchParams(window.location.search);
+  window.location.href = './edit.html?id=' + params.get('id');
+}
+
+/* ── Main Logic ── */
+document.addEventListener('DOMContentLoaded', function () {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') window.location.href = '../login.html';
+
+  const params   = new URLSearchParams(window.location.search);
+  const id       = params.get('id');
+  const customers = Store.get('customers', []);
+  const customer  = customers.find(c => c.id === id);
+
+  if (!customer) {
+    document.getElementById('custHeroName').textContent = 'Customer Not Found';
+    return;
+  }
+
+  /* ── Shop info from settings ── */
+  const shop = Store.get('shopInfo', {});
+  const shopName = shop.name || 'BHAI BHAI COMMUNICATION';
+  const shopSub  = (shop.address || '') + (shop.phone ? ' | ' + shop.phone : '');
+
+  /* ── Populate hero ── */
+  const initials = customer.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('custAvatar').textContent    = initials;
+  document.getElementById('custHeroName').textContent  = customer.name;
+  document.getElementById('custHeroPhone').textContent = customer.phone || '—';
+  document.getElementById('custHeroEmail').textContent = customer.email || '—';
+  document.getElementById('custHeroAddr').textContent  = customer.address || '—';
+  document.getElementById('topbarTitle').textContent   = customer.name;
+  document.getElementById('breadcrumbName').textContent = customer.name;
+  document.title = customer.name + ' — BHAI BHAI';
+  document.getElementById('ledgerLink').href = './ledger.html?id=' + id;
+
+  /* ── Info panel ── */
+  document.getElementById('infoId').textContent    = customer.id;
+  document.getElementById('infoName').textContent  = customer.name;
+  document.getElementById('infoPhone').textContent = customer.phone || '—';
+  document.getElementById('infoEmail').textContent = customer.email || '—';
+  document.getElementById('infoAddr').textContent  = customer.address || '—';
+  document.getElementById('infoSince').textContent = Utils.formatDate(customer.created);
+  document.getElementById('infoNotes').textContent = customer.notes || '—';
+
+  /* ── Invoices ── */
+  const invoices   = Store.get('invoices', []).filter(i => i.customerId === id);
+  let totalBilled  = 0, totalPaid = 0;
+
+  document.getElementById('invoiceCount').textContent = invoices.length + ' invoice' + (invoices.length !== 1 ? 's' : '');
+
+  document.getElementById('customerInvoicesBody').innerHTML = invoices.length === 0
+    ? '<tr><td colspan="7" class="text-center py-4 text-muted">No invoices for this customer</td></tr>'
+    : invoices.map(inv => {
+        totalBilled += inv.total;
+        totalPaid   += inv.paid;
+        const bal    = inv.total - inv.paid;
+        return `<tr>
+          <td><a href="../invoices/view.html?id=${inv.id}" style="color:var(--primary);font-weight:600;">${inv.id}</a></td>
+          <td>${Utils.formatDate(inv.date)}</td>
+          <td>${Utils.currency(inv.total)}</td>
+          <td style="color:var(--success);font-weight:600;">${Utils.currency(inv.paid)}</td>
+          <td style="color:${bal>0?'var(--danger)':'var(--success)'};font-weight:600;">${Utils.currency(bal)}</td>
+          <td>${Utils.statusBadge(inv.status)}</td>
+          <td><a href="../invoices/view.html?id=${inv.id}" class="btn-icon"><i class="bi bi-eye"></i></a></td>
+        </tr>`;
+      }).join('');
+
+  /* ── Hero totals ── */
+  document.getElementById('heroTotal').textContent = Utils.currency(totalBilled);
+  document.getElementById('heroPaid').textContent  = Utils.currency(totalPaid);
+  document.getElementById('heroDue').textContent   = Utils.currency(totalBilled - totalPaid);
+
+  /* ── Build statement rows ── */
+  let runBal = 0;
+  const stmtRows = [];
+  let stmtDebit = 0, stmtCredit = 0;
+
+  invoices.forEach(inv => {
+    runBal    += inv.total;
+    stmtDebit += inv.total;
+    stmtRows.push({
+      date:   inv.date,
+      desc:   'Invoice raised',
+      invId:  inv.id,
+      debit:  inv.total,
+      credit: 0,
+      balance: runBal,
+      type:   'debit',
+      status: inv.status
+    });
+    if (inv.paid > 0) {
+      runBal     -= inv.paid;
+      stmtCredit += inv.paid;
+      stmtRows.push({
+        date:   inv.date,
+        desc:   'Payment received',
+        invId:  inv.id,
+        debit:  0,
+        credit: inv.paid,
+        balance: runBal,
+        type:   'credit',
+        status: 'Paid'
+      });
+    }
+  });
+
+  /* ── Statement totals ── */
+  document.getElementById('stmtDebitTotal').textContent  = Utils.currency(stmtDebit);
+  document.getElementById('stmtCreditTotal').textContent = Utils.currency(stmtCredit);
+  document.getElementById('stmtBalTotal').textContent    = Utils.currency(stmtDebit - stmtCredit);
+
+  /* ── Statement table ── */
+  document.getElementById('statementBody').innerHTML = stmtRows.length === 0
+    ? '<tr><td colspan="7" class="text-center py-4 text-muted">No transactions found</td></tr>'
+    : stmtRows.map(r => `
+      <tr class="stmt-${r.type}">
+        <td>${Utils.formatDate(r.date)}</td>
+        <td>
+          <span class="amount-pill pill-${r.type}">${r.type === 'debit' ? '▲ DR' : '▼ CR'}</span>
+          ${r.desc}
+        </td>
+        <td><a href="../invoices/view.html?id=${r.invId}" style="color:var(--primary);font-weight:600;">${r.invId}</a></td>
+        <td class="debit">${r.debit > 0 ? Utils.currency(r.debit) : '—'}</td>
+        <td class="credit">${r.credit > 0 ? Utils.currency(r.credit) : '—'}</td>
+        <td class="stmt-running-balance" style="color:${r.balance>0?'var(--danger)':'var(--success)'}">
+          ${Utils.currency(Math.abs(r.balance))} <small>${r.balance>0?'Due':'Cr'}</small>
+        </td>
+        <td>${Utils.statusBadge(r.status)}</td>
+      </tr>`).join('');
+
+  /* ── Print Statement ── */
+  const now = new Date();
+  document.getElementById('psShopName').textContent = shopName;
+  document.getElementById('psShopSub').textContent  = shopSub;
+  document.getElementById('psDate').textContent     = 'Date: ' + now.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+  document.getElementById('psGenDate').textContent  = now.toLocaleString('en-IN');
+  document.getElementById('psCustName').textContent = customer.name;
+  document.getElementById('psCustMeta').textContent = 'Phone: ' + customer.phone + (customer.email ? ' | ' + customer.email : '');
+  document.getElementById('psBilled').textContent   = Utils.currency(totalBilled);
+  document.getElementById('psPaid').textContent     = Utils.currency(totalPaid);
+  document.getElementById('psDue').textContent      = Utils.currency(totalBilled - totalPaid);
+  document.getElementById('psSigShop').textContent  = shopName;
+
+  document.getElementById('printStatementBody').innerHTML = stmtRows.length === 0
+    ? '<tr><td colspan="8" class="text-center py-4">No transactions found</td></tr>'
+    : stmtRows.map((r, i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${Utils.formatDate(r.date)}</td>
+        <td>${r.desc}</td>
+        <td>${r.invId}</td>
+        <td class="debit">${r.debit > 0 ? Utils.currency(r.debit) : '—'}</td>
+        <td class="credit">${r.credit > 0 ? Utils.currency(r.credit) : '—'}</td>
+        <td class="bal" style="color:${r.balance>0?'#ef4444':'#10b981'}">${Utils.currency(Math.abs(r.balance))} ${r.balance>0?'Dr':'Cr'}</td>
+        <td>${r.status}</td>
+      </tr>`).join('');
+
+  /* ── QR codes ── */
+  const qrText = window.location.href;
+  makeQR('custQrCanvas',  qrText, 160);
+  makeQR('printQrCanvas', qrText, 100);
+});
+</script>
+</body>
+</html>

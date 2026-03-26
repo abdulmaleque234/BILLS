@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quotations — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div><button class="sidebar-collapse-btn" id="collapseBtn"><i class="bi bi-chevron-left"></i></button></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../quotations/index.html" class="nav-link active"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../purchase-orders/index.html" class="nav-link"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="../backup/index.html" class="nav-link"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v2.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar"><button id="sidebarToggle"><i class="bi bi-list"></i></button></header>
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Dashboard</a><i class="bi bi-chevron-right"></i><span>Quotations</span></div>
+          <h1 class="page-title">Quotations / Estimates</h1>
+          <p class="page-subtitle">Create and manage price estimates — convert to invoice when accepted</p>
+        </div>
+        <a href="../quotations/create.html" class="btn-custom btn-primary-custom"><i class="bi bi-plus-lg"></i> New Quotation</a>
+      </div>
+
+      <div class="row g-3 mb-4" id="qtStats"></div>
+
+      <!-- Filter Tabs -->
+      <div class="card">
+        <div class="card-header-custom" style="flex-wrap:wrap;gap:10px;">
+          <span class="card-title-custom"><i class="bi bi-file-earmark-text"></i> All Quotations</span>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <div class="filter-tabs" id="filterTabs">
+              <button class="filter-tab active" data-filter="All">All</button>
+              <button class="filter-tab" data-filter="Sent">Sent</button>
+              <button class="filter-tab" data-filter="Accepted">Accepted</button>
+              <button class="filter-tab" data-filter="Converted">Converted</button>
+              <button class="filter-tab" data-filter="Draft">Draft</button>
+            </div>
+            <div class="search-bar"><i class="bi bi-search"></i><input id="searchInput" class="form-control-custom" placeholder="Search..." style="width:180px;"></div>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="table-custom">
+            <thead><tr><th>#Quote</th><th>Customer</th><th>Date</th><th>Valid Till</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="qtBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+let currentFilter = 'All';
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+  renderPage();
+  initTableSearch('searchInput','qtBody');
+  document.getElementById('collapseBtn').onclick = () => {
+    document.querySelector('.sidebar').classList.toggle('collapsed');
+    document.querySelector('.main-content').classList.toggle('expanded');
+  };
+  document.querySelectorAll('.filter-tab').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentFilter = this.dataset.filter;
+      renderTable();
+    });
+  });
+});
+
+function renderPage() {
+  const qs = Store.get('quotations', []);
+  const sent = qs.filter(q => q.status === 'Sent').length;
+  const accepted = qs.filter(q => q.status === 'Accepted').length;
+  const converted = qs.filter(q => q.status === 'Converted').length;
+  const totalVal = qs.reduce((s, q) => s + q.total, 0);
+  document.getElementById('qtStats').innerHTML = `
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-blue"><i class="bi bi-file-earmark-text"></i></div><div class="stat-info"><div class="stat-value">${qs.length}</div><div class="stat-label">Total Quotes</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-orange"><i class="bi bi-send"></i></div><div class="stat-info"><div class="stat-value">${sent}</div><div class="stat-label">Sent / Pending</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-green"><i class="bi bi-check-circle"></i></div><div class="stat-info"><div class="stat-value">${converted}</div><div class="stat-label">Converted</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon grad-purple"><i class="bi bi-currency-rupee"></i></div><div class="stat-info"><div class="stat-value">${Utils.currency(totalVal)}</div><div class="stat-label">Total Value</div></div></div></div>`;
+  renderTable();
+}
+
+function renderTable() {
+  const qs = Store.get('quotations', []);
+  const filtered = currentFilter === 'All' ? qs : qs.filter(q => q.status === currentFilter);
+  document.getElementById('qtBody').innerHTML = filtered.length ? filtered.map(q => `
+    <tr>
+      <td class="fw-bold text-primary-color">${q.id}</td>
+      <td>${q.customerName}</td>
+      <td class="text-sm text-muted-c">${Utils.formatDate(q.date)}</td>
+      <td class="text-sm ${new Date(q.validUntil)<new Date()&&q.status==='Sent'?'fw-bold':'text-muted-c'}" style="${new Date(q.validUntil)<new Date()&&q.status==='Sent'?'color:var(--danger);':''}">${Utils.formatDate(q.validUntil)}</td>
+      <td class="fw-bold">${Utils.currency(q.total)}</td>
+      <td>${Utils.statusBadge(q.status)}</td>
+      <td>
+        ${q.status !== 'Converted' ? `<button onclick="convertToInvoice('${q.id}')" class="btn-icon btn-view" title="Convert to Invoice"><i class="bi bi-receipt"></i></button>` : '<span class="text-sm text-muted-c">→ '+q.invoiceId+'</span>'}
+        <button onclick="updateStatus('${q.id}')" class="btn-icon btn-edit" title="Update Status"><i class="bi bi-arrow-repeat"></i></button>
+        <button onclick="deleteQuote('${q.id}')" class="btn-icon btn-del" title="Delete"><i class="bi bi-trash"></i></button>
+      </td>
+    </tr>`).join('') : '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-file-earmark-text"></i><h3>No quotations found</h3><p>Create your first quotation.</p></div></td></tr>';
+}
+
+function convertToInvoice(id) {
+  const qs = Store.get('quotations', []);
+  const q = qs.find(x => x.id === id);
+  if (!q) return;
+  if (!confirm(`Convert ${q.id} to invoice for ${q.customerName}?`)) return;
+  const invoices = Store.get('invoices', []);
+  const settings = Store.get('settings', {});
+  const inv = {
+    id: (settings.invoicePrefix || 'INV-') + String(invoices.length + 1).padStart(3, '0'),
+    customerId: q.customerId, customerName: q.customerName,
+    date: Utils.today(), dueDate: '', items: q.items,
+    subtotal: q.subtotal, discount: q.discount, discountType: q.discountType,
+    taxAmount: 0, total: q.total, paid: 0, status: 'Unpaid', notes: 'From ' + q.id
+  };
+  invoices.push(inv);
+  Store.set('invoices', invoices);
+  q.status = 'Converted'; q.invoiceId = inv.id;
+  Store.set('quotations', qs);
+  ActivityLog.push(`Converted ${q.id} to ${inv.id} for ${q.customerName}`);
+  Utils.toast(`Converted to Invoice ${inv.id}!`, 'success');
+  renderPage();
+}
+
+function updateStatus(id) {
+  const qs = Store.get('quotations', []);
+  const q = qs.find(x => x.id === id);
+  if (!q) return;
+  const statuses = ['Draft','Sent','Accepted','Rejected'];
+  const current = statuses.indexOf(q.status);
+  const next = statuses[(current + 1) % statuses.length];
+  q.status = next;
+  Store.set('quotations', qs);
+  renderTable(); Utils.toast(`Status updated to ${next}`);
+}
+
+function deleteQuote(id) {
+  if (!confirmDelete('Delete this quotation?')) return;
+  Store.set('quotations', Store.get('quotations', []).filter(q => q.id !== id));
+  renderPage(); Utils.toast('Quotation deleted.', 'warning');
+}
+</script>
+</body>
+</html>

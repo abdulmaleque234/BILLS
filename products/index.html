@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" media="print" onload="this.media='all'">
+</head>
+<body>
+<div class="app-wrapper">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div><button class="sidebar-collapse-btn" id="collapseBtn"><i class="bi bi-chevron-left"></i></button></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link active"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../quotations/index.html" class="nav-link"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../purchase-orders/index.html" class="nav-link"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="../backup/index.html" class="nav-link"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v2.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <button id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <div class="topbar-actions">
+        <a href="../categories/index.html" class="btn-custom btn-outline-custom"><i class="bi bi-tags"></i> Categories</a>
+        <a href="./add.html" class="btn-custom btn-primary-custom"><i class="bi bi-plus-lg"></i> Add Product</a>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Dashboard</a><i class="bi bi-chevron-right"></i><span>Products</span></div>
+          <h1 class="page-title">Products</h1>
+          <p class="page-subtitle">Manage your product inventory</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-custom btn-outline-custom" onclick="prodCSV()"><i class="bi bi-download"></i> Export CSV</button>
+          <a href="../categories/index.html" class="btn-custom btn-outline-custom"><i class="bi bi-tags"></i> Categories</a>
+          <a href="./add.html" class="btn-custom btn-primary-custom"><i class="bi bi-plus-lg"></i> Add Product</a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon bg-primary-soft"><i class="bi bi-box-seam"></i></div><div class="stat-info"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total Products</div></div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon bg-danger-soft"><i class="bi bi-exclamation-triangle"></i></div><div class="stat-info"><div class="stat-value" id="statLow">0</div><div class="stat-label">Low Stock</div></div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon bg-warning-soft"><i class="bi bi-tags"></i></div><div class="stat-info"><div class="stat-value" id="statCat">0</div><div class="stat-label">Categories</div></div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon bg-success-soft"><i class="bi bi-currency-rupee"></i></div><div class="stat-info"><div class="stat-value" id="statVal">₹0</div><div class="stat-label">Inventory Value</div></div></div></div>
+      </div>
+
+      <!-- Stock Filter Tabs -->
+      <div class="card">
+        <div class="card-header-custom" style="flex-wrap:wrap;gap:10px;">
+          <span class="card-title-custom"><i class="bi bi-box-seam"></i> All Products</span>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto;">
+            <select id="catFilter" class="form-control-custom" style="width:150px;"><option value="">All Categories</option></select>
+            <div class="search-bar"><i class="bi bi-search"></i><input type="text" id="searchInput" class="form-control-custom" placeholder="Search…"></div>
+          </div>
+        </div>
+        <div style="padding:0 20px;border-bottom:1px solid var(--card-border);">
+          <div class="filter-tabs" id="stockTabs">
+            <button class="filter-tab active" data-stock="all">All</button>
+            <button class="filter-tab" data-stock="low"><i class="bi bi-exclamation-triangle" style="color:var(--warning);"></i> Low Stock</button>
+            <button class="filter-tab" data-stock="out"><i class="bi bi-x-circle" style="color:var(--danger);"></i> Out of Stock</button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="table-custom">
+            <thead><tr><th>#</th><th>Product Name</th><th>Category</th><th>Price</th><th>Stock Level</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="productsBody"></tbody>
+          </table>
+        </div>
+        <div id="prodTableFooter" style="padding:10px 20px;font-size:13px;color:var(--text-muted);border-top:1px solid var(--card-border);"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Stock Adjust Modal -->
+<div class="modal-overlay" id="adjustModal">
+  <div class="modal-box" style="max-width:360px;">
+    <h3 class="modal-title"><i class="bi bi-plus-slash-minus me-2" style="color:var(--primary);"></i>Adjust Stock</h3>
+    <div id="adjustProductName" style="font-weight:600;margin-bottom:12px;color:var(--text-secondary);"></div>
+    <div style="display:grid;gap:14px;">
+      <div><label class="form-label-custom">Adjustment Type</label>
+        <select id="adjustType" class="form-control-custom">
+          <option value="add">Add Stock (+)</option>
+          <option value="remove">Remove Stock (-)</option>
+        </select>
+      </div>
+      <div><label class="form-label-custom">Quantity</label><input type="number" id="adjustQty" class="form-control-custom" min="1" placeholder="Enter quantity"></div>
+      <div><label class="form-label-custom">Note (optional)</label><input type="text" id="adjustNote" class="form-control-custom" placeholder="Purchase, return, correction…"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:18px;">
+      <button class="btn-custom btn-primary-custom" style="flex:1;" onclick="confirmAdjust()"><i class="bi bi-check-circle"></i> Confirm</button>
+      <button class="btn-custom btn-outline-custom" onclick="document.getElementById('adjustModal').classList.remove('show')">Cancel</button>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+  document.getElementById('collapseBtn').onclick = () => { document.querySelector('.sidebar').classList.toggle('collapsed'); document.querySelector('.main-content').classList.toggle('expanded'); };
+
+  let currentStock = 'all';
+  let adjustingId = null;
+
+  window.promptDelete = function (id) {
+    if (!confirm('Delete this product?')) return;
+    Store.set('products', Store.get('products', []).filter(p => p.id !== id));
+    ActivityLog.push(`Product ${id} deleted`);
+    render(); Utils.toast('Product deleted!', 'warning');
+  };
+
+  window.openAdjust = function(id) {
+    adjustingId = id;
+    const p = Store.get('products',[]).find(p=>p.id===id);
+    document.getElementById('adjustProductName').textContent = p ? `${p.name} (Current: ${p.stock})` : id;
+    document.getElementById('adjustQty').value = '';
+    document.getElementById('adjustModal').classList.add('show');
+  };
+  window.confirmAdjust = function() {
+    const qty = parseInt(document.getElementById('adjustQty').value) || 0;
+    if (qty <= 0) { Utils.toast('Enter a valid quantity','error'); return; }
+    const products = Store.get('products',[]);
+    const idx = products.findIndex(p=>p.id===adjustingId);
+    if (idx < 0) return;
+    const type = document.getElementById('adjustType').value;
+    if (type === 'add') products[idx].stock += qty;
+    else products[idx].stock = Math.max(0, products[idx].stock - qty);
+    Store.set('products', products);
+    ActivityLog.push(`Stock adjusted: ${products[idx].name} ${type==='add'?'+':'-'}${qty}`);
+    document.getElementById('adjustModal').classList.remove('show');
+    render(); Utils.toast('Stock updated!', 'success');
+  };
+
+  // Populate category filter
+  function populateCatFilter() {
+    const categories = Store.get('categories', []);
+    const sel = document.getElementById('catFilter');
+    sel.innerHTML = '<option value="">All Categories</option>' +
+      categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+  }
+
+  // Stock Tabs
+  document.querySelectorAll('#stockTabs .filter-tab').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#stockTabs .filter-tab').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active'); currentStock = this.dataset.stock; render();
+    });
+  });
+
+  function render() {
+    const products = Store.get('products', []);
+    const categories = Store.get('categories', []);
+    const catFilter = document.getElementById('catFilter').value;
+
+    let filtered = products;
+    if (catFilter) filtered = filtered.filter(p => p.category === catFilter);
+    if (currentStock === 'low') filtered = filtered.filter(p => p.stock > 0 && p.stock <= p.minStock);
+    else if (currentStock === 'out') filtered = filtered.filter(p => p.stock === 0);
+
+    const lowStock = products.filter(p => p.stock <= p.minStock);
+    const invValue = products.reduce((s, p) => s + (p.price||0) * (p.stock||0), 0);
+    document.getElementById('statTotal').textContent = products.length;
+    document.getElementById('statLow').textContent   = lowStock.length;
+    document.getElementById('statCat').textContent   = categories.length;
+    document.getElementById('statVal').textContent   = Utils.currency(invValue);
+    document.getElementById('prodTableFooter').textContent = `Showing ${filtered.length} of ${products.length} products`;
+
+    document.getElementById('productsBody').innerHTML = filtered.length === 0
+      ? '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-box-seam"></i><p>No products found. <a href="./add.html">Add one</a></p></div></td></tr>'
+      : filtered.map((p, i) => {
+          const isOut = p.stock === 0;
+          const isLow = !isOut && p.stock <= p.minStock;
+          const pct   = p.minStock > 0 ? Math.min(100, Math.round((p.stock/Math.max(p.minStock*3,10))*100)) : 80;
+          return `<tr style="${isOut?'background:var(--danger-light);':isLow?'background:var(--warning-light);':''} ">
+            <td>${i + 1}</td>
+            <td><strong>${p.name}</strong>${p.sku?`<br><span style="font-size:11px;color:var(--text-muted);">SKU: ${p.sku}</span>`:''}</td>
+            <td><span class="badge-custom badge-primary">${p.category||'—'}</span></td>
+            <td class="fw-bold">${Utils.currency(p.price)}</td>
+            <td>
+              <span class="${isOut?'stock-out':isLow?'stock-low':'stock-ok'}">${p.stock} ${isOut?'(Out!)':isLow?'(Low!)':''}</span>
+              <div class="progress-bar-wrap" style="margin-top:4px;"><div class="progress-bar-fill ${isOut?'red':isLow?'orange':'green'}" style="width:${pct}%"></div></div>
+            </td>
+            <td>${isOut?'<span class="badge-custom badge-danger">Out of Stock</span>':isLow?'<span class="badge-custom badge-warning">Low Stock</span>':'<span class="badge-custom badge-success">In Stock</span>'}</td>
+            <td>
+              <div class="d-flex gap-1">
+                <button class="btn-icon" onclick="openAdjust('${p.id}')" title="Adjust Stock"><i class="bi bi-plus-slash-minus"></i></button>
+                <a href="./add.html?id=${p.id}" class="btn-icon btn-edit" title="Edit"><i class="bi bi-pencil"></i></a>
+                <button class="btn-icon btn-delete" onclick="promptDelete('${p.id}')" title="Delete"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>`;
+        }).join('');
+  }
+
+  function prodCSV() {
+    const products = Store.get('products',[]);
+    csvExport(['ID','Name','Category','Price','Stock','Min Stock','SKU'],products.map(p=>[p.id,p.name,p.category,p.price,p.stock,p.minStock||0,p.sku||'']),`products_${Utils.today()}.csv`);
+  }
+  window.prodCSV = prodCSV;
+
+  document.getElementById('catFilter').addEventListener('change', render);
+  populateCatFilter();
+  render();
+  initTableSearch('searchInput', 'productsBody');
+});
+</script>
+</body>
+</html>

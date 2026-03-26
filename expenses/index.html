@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expenses — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app-wrapper">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div><div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div><button class="sidebar-collapse-btn" id="collapseBtn"><i class="bi bi-chevron-left"></i></button></div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i><span class="nav-label-text">Dashboard</span></a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i><span class="nav-label-text">Customers</span></a></li>
+      <li class="nav-item"><a href="../suppliers/index.html" class="nav-link"><i class="bi bi-truck"></i><span class="nav-label-text">Suppliers</span></a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i><span class="nav-label-text">Products</span></a></li>
+      <li class="nav-item"><a href="../staff/index.html" class="nav-link"><i class="bi bi-person-badge"></i><span class="nav-label-text">Staff</span></a></li>
+      <li><div class="nav-section-label">Sales</div></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link"><i class="bi bi-receipt"></i><span class="nav-label-text">Invoices</span></a></li>
+      <li class="nav-item"><a href="../quotations/index.html" class="nav-link"><i class="bi bi-file-earmark-text"></i><span class="nav-label-text">Quotations</span></a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i><span class="nav-label-text">Payments</span></a></li>
+      <li class="nav-item"><a href="../returns/index.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span class="nav-label-text">Returns</span></a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../purchase-orders/index.html" class="nav-link"><i class="bi bi-cart-check"></i><span class="nav-label-text">Purchase Orders</span></a></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link active"><i class="bi bi-wallet2"></i><span class="nav-label-text">Expenses</span></a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="nav-label-text">Reports</span></a></li>
+      <li class="nav-item"><a href="../taxes/index.html" class="nav-link"><i class="bi bi-percent"></i><span class="nav-label-text">Tax Config</span></a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i><span class="nav-label-text">Reminders</span></a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i><span class="nav-label-text">Activity Log</span></a></li>
+      <li class="nav-item"><a href="../backup/index.html" class="nav-link"><i class="bi bi-cloud-arrow-down"></i><span class="nav-label-text">Backup & Export</span></a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i><span class="nav-label-text">Settings</span></a></li>
+    </ul></nav>
+    <div class="sidebar-footer"><span class="sidebar-footer-text">Bills v2.0 &copy; 2026</span></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content">
+    <header class="topbar"><button id="sidebarToggle"><i class="bi bi-list"></i></button></header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Dashboard</a><i class="bi bi-chevron-right"></i><span>Expenses</span></div>
+          <h1 class="page-title">Expenses</h1>
+          <p class="page-subtitle">Track your business expenses</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-custom btn-outline-custom" onclick="expCSV()"><i class="bi bi-download"></i> Export CSV</button>
+          <button class="btn-custom btn-primary-custom" onclick="document.getElementById('addExpenseModal').classList.add('show')"><i class="bi bi-plus-lg"></i> Add Expense</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon bg-danger-soft"><i class="bi bi-wallet2"></i></div><div class="stat-info"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total Expenses</div></div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon bg-warning-soft"><i class="bi bi-currency-rupee"></i></div><div class="stat-info"><div class="stat-value" id="statAmount">₹0</div><div class="stat-label">Total Amount</div></div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon bg-primary-soft"><i class="bi bi-calendar3"></i></div><div class="stat-info"><div class="stat-value" id="statThisMonth">₹0</div><div class="stat-label">This Month</div></div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon bg-info-soft"><i class="bi bi-tags"></i></div><div class="stat-info"><div class="stat-value" id="statCats">0</div><div class="stat-label">Categories</div></div></div></div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header-custom">
+              <span class="card-title-custom"><i class="bi bi-wallet2"></i> Expense History</span>
+              <div class="search-bar"><i class="bi bi-search"></i><input type="text" id="searchInput" class="form-control-custom" placeholder="Search..."></div>
+            </div>
+            <div class="table-wrapper">
+              <table class="table-custom">
+                <thead><tr><th>#</th><th>Date</th><th>Category</th><th>Description</th><th>Amount</th><th>Actions</th></tr></thead>
+                <tbody id="expensesBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-pie-chart-fill" style="color:var(--danger);"></i> By Category</span></div>
+            <div class="card-body-custom d-flex flex-column align-items-center">
+              <div class="chart-container" style="height:180px;width:180px;"><canvas id="expDonut"></canvas></div>
+              <div id="categoryBreakdown" style="width:100%;margin-top:12px;font-size:12.5px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal-overlay" id="addExpenseModal">
+  <div class="modal-box" style="max-width:420px;">
+    <h3 class="modal-title"><i class="bi bi-wallet2 me-2"></i>Add Expense</h3>
+      <div style="display:grid;gap:12px;margin-top:8px;">
+        <div>
+          <label class="form-label-custom">Category</label>
+          <div style="display:flex;gap:8px;">
+            <select id="expCat" class="form-control-custom" style="flex:1;"></select>
+          </div>
+        </div>
+        <div class="form-row form-row-2">
+          <div><label class="form-label-custom">Amount (₹)</label><input type="number" id="expAmount" class="form-control-custom" min="0" step="0.01" placeholder="0"></div>
+          <div><label class="form-label-custom">Payment Mode</label>
+            <select id="expMode" class="form-control-custom"><option>Cash</option><option>UPI</option><option>Card</option><option>Bank Transfer</option></select>
+          </div>
+        </div>
+        <div><label class="form-label-custom">Description</label><input type="text" id="expDesc" class="form-control-custom" placeholder="Brief description…"></div>
+        <div><label class="form-label-custom">Date</label><input type="date" id="expDate" class="form-control-custom"></div>
+      </div>
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button onclick="addExpense()" class="btn-custom btn-primary-custom" style="flex:1;"><i class="bi bi-check-lg"></i> Add Expense</button>
+      <button onclick="document.getElementById('addExpenseModal').classList.remove('show')" class="btn-custom btn-outline-custom">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (localStorage.getItem('bills_loggedIn') !== 'true') { window.location.href = '../login.html'; return; }
+  document.getElementById('collapseBtn').onclick = () => { document.querySelector('.sidebar').classList.toggle('collapsed'); document.querySelector('.main-content').classList.toggle('expanded'); };
+  document.getElementById('expDate').value = Utils.today();
+  const cats = Store.get('expense_categories', []);
+  cats.forEach(c => document.getElementById('expCat').insertAdjacentHTML('beforeend',`<option value="${c.id}">${c.name}</option>`));
+  document.getElementById('addExpenseModal').addEventListener('click', e =>
+    { if(e.target===e.currentTarget) e.currentTarget.classList.remove('show'); });
+  renderExpenses(); initTableSearch('searchInput','expensesBody');
+});
+
+function renderExpenses() {
+  const expenses = Store.get('expenses', []);
+  const total = expenses.reduce((s, e) => s + e.amount, 0);
+  const now = new Date(); const m = now.getMonth(); const y = now.getFullYear();
+  const thisMonth = expenses.filter(e => { const d = new Date(e.date); return d.getMonth() === m && d.getFullYear() === y; }).reduce((s, e) => s + e.amount, 0);
+  const catSet = [...new Set(expenses.map(e => e.category))];
+
+  document.getElementById('statTotal').textContent = expenses.length;
+  document.getElementById('statAmount').textContent = Utils.currency(total);
+  document.getElementById('statThisMonth').textContent = Utils.currency(thisMonth);
+  document.getElementById('statCats').textContent = catSet.length;
+
+  document.getElementById('expensesBody').innerHTML = expenses.length === 0
+    ? '<tr><td colspan="6"><div class="empty-state"><i class="bi bi-wallet2"></i><p>No expenses recorded.</p></div></td></tr>'
+    : [...expenses].reverse().map((e, i) => {
+        const cats = Store.get('expense_categories',[]);
+        const cat = cats.find(c=>c.id===e.category);
+        const catName = cat?cat.name:(e.category||e.name||'Other');
+        const catColor = cat?cat.color:'#64748b';
+        return `<tr>
+          <td>${expenses.length - i}</td>
+          <td>${Utils.formatDate(e.date)}</td>
+          <td><span class="badge-custom" style="background:${catColor}20;color:${catColor};">${catName}</span></td>
+          <td>${e.name||e.description||'-'}</td>
+          <td style="font-weight:600;color:var(--danger)">${Utils.currency(e.amount)}</td>
+          <td><button class="btn-icon btn-delete" onclick="deleteExpense('${e.id}')"><i class="bi bi-trash"></i></button></td>
+        </tr>`;
+      }).join('');
+
+  // Category Donut Chart
+  const cats = Store.get('expense_categories',[]);
+  const catMap = {};
+  expenses.forEach(e => {
+    const cat = cats.find(c=>c.id===e.category);
+    const name = cat?cat.name:(e.category||'Other');
+    catMap[name] = { amt:(catMap[name]?.amt||0)+e.amount, color:cat?.color||'#64748b' };
+  });
+  const labels=Object.keys(catMap), vals=labels.map(l=>catMap[l].amt), colors=labels.map(l=>catMap[l].color);
+  const ctx = document.getElementById('expDonut');
+  if (ctx._chart) ctx._chart.destroy();
+  if (labels.length) {
+    ctx._chart = new Chart(ctx, { type:'doughnut', data:{labels, datasets:[{data:vals,backgroundColor:colors,borderWidth:0,hoverOffset:4}]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'} });
+  }
+  document.getElementById('categoryBreakdown').innerHTML = labels.map((l,i)=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--card-border);">
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:3px;background:${colors[i]};flex-shrink:0;"></span>${l}</span>
+      <span style="font-weight:600;color:var(--danger);">${Utils.currency(vals[i])}</span>
+    </div>`).join('') || '<p style="text-align:center;color:var(--text-muted);padding:20px;">No data</p>';
+}
+
+window.addExpense = function () {
+  const expenses = Store.get('expenses', []);
+  const cats = Store.get('expense_categories', []);
+  const cat = cats.find(c=>c.id===document.getElementById('expCat').value);
+  const exp = {
+    id: Utils.generateId('EXP-', expenses),
+    category: document.getElementById('expCat').value,
+    name: document.getElementById('expDesc').value.trim() || (cat?.name||'Expense'),
+    amount: parseFloat(document.getElementById('expAmount').value) || 0,
+    description: document.getElementById('expDesc').value.trim(),
+    paymentMode: document.getElementById('expMode').value,
+    date: document.getElementById('expDate').value,
+    notes: '',
+  };
+  if (!exp.amount || !exp.date) { Utils.toast('Fill amount and date.', 'error'); return; }
+  expenses.push(exp);
+  Store.set('expenses', expenses);
+  ActivityLog.push(`Added expense: ${cat?.name||exp.category} ${Utils.currency(exp.amount)}`);
+  document.getElementById('addExpenseModal').classList.remove('show');
+  renderExpenses();
+  Utils.toast('Expense added!');
+};
+
+window.deleteExpense = function (id) {
+  const expenses = Store.get('expenses', []);
+  const exp = expenses.find(e => e.id === id);
+  if (!confirm('Delete this expense?')) return;
+  Store.set('expenses', expenses.filter(e => e.id !== id));
+  ActivityLog.push(`Deleted expense ${id}`);
+  renderExpenses();
+  Utils.toast('Expense deleted!', 'warning');
+};
+
+function expCSV() {
+  const expenses = Store.get('expenses',[]);
+  csvExport(['ID','Category','Description','Amount','Date','Payment Mode'],expenses.map(e=>[e.id,e.category,e.name||e.description||'',e.amount,e.date,e.paymentMode||'']),`expenses_${Utils.today()}.csv`);
+}
+</script>
+</body>
+</html>

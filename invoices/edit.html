@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Invoice — BHAI BHAI COMMUNICATION</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" media="print" onload="this.media='all'">
+</head>
+<body>
+<div class="app-wrapper">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="bi bi-receipt-cutoff"></i></div>
+      <div class="brand-text">BHAI BHAI<span>COMMUNICATION</span></div>
+    </div>
+    <nav class="sidebar-nav"><ul>
+      <li class="nav-item"><a href="../index.html" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li><div class="nav-section-label">Management</div></li>
+      <li class="nav-item"><a href="../customers/index.html" class="nav-link"><i class="bi bi-people"></i> Customers</a></li>
+      <li class="nav-item"><a href="../products/index.html" class="nav-link"><i class="bi bi-box-seam"></i> Products</a></li>
+      <li class="nav-item"><a href="../invoices/index.html" class="nav-link active"><i class="bi bi-receipt"></i> Invoices</a></li>
+      <li class="nav-item"><a href="../payments/index.html" class="nav-link"><i class="bi bi-credit-card"></i> Payments</a></li>
+      <li><div class="nav-section-label">Finance</div></li>
+      <li class="nav-item"><a href="../expenses/index.html" class="nav-link"><i class="bi bi-wallet2"></i> Expenses</a></li>
+      <li class="nav-item"><a href="../reports/index.html" class="nav-link"><i class="bi bi-bar-chart-line"></i> Reports</a></li>
+      <li><div class="nav-section-label">Tools</div></li>
+      <li class="nav-item"><a href="../reminders/index.html" class="nav-link"><i class="bi bi-bell"></i> Reminders</a></li>
+      <li class="nav-item"><a href="../activity/index.html" class="nav-link"><i class="bi bi-clock-history"></i> Activity Log</a></li>
+      <li class="nav-item"><a href="../settings/index.html" class="nav-link"><i class="bi bi-gear"></i> Settings</a></li>
+      <li class="nav-item"><a href="../profile.html" class="nav-link"><i class="bi bi-person-circle"></i> Profile</a></li>
+    </ul></nav>
+    <div class="sidebar-footer">Bills v1.0 &copy; 2025</div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <button id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <span class="topbar-title" id="editTitle">Edit Invoice</span>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb-nav"><a href="../index.html">Home</a><i class="bi bi-chevron-right"></i><a href="./index.html">Invoices</a><i class="bi bi-chevron-right"></i><span>Edit</span></div>
+          <h1 class="page-title">Edit Invoice</h1>
+        </div>
+        <a href="./index.html" class="btn-custom btn-outline-custom"><i class="bi bi-arrow-left"></i> Back</a>
+      </div>
+
+      <form id="invoiceForm">
+        <div class="row g-4">
+          <!-- Left Column -->
+          <div class="col-lg-8">
+            <div class="card mb-4">
+              <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-person"></i> Customer Details</span></div>
+              <div class="card-body-custom">
+                <div class="form-row form-row-2 mb-3">
+                  <div>
+                    <label class="form-label-custom">Select Customer</label>
+                    <select id="customerId" class="form-control-custom"><option value="">-- Walk-in --</option></select>
+                  </div>
+                  <div>
+                    <label class="form-label-custom">Customer Name</label>
+                    <input type="text" id="customerName" class="form-control-custom">
+                  </div>
+                </div>
+                <div>
+                  <label class="form-label-custom">Phone</label>
+                  <input type="text" id="customerPhone" class="form-control-custom">
+                </div>
+              </div>
+            </div>
+
+            <div class="card mb-4">
+              <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-calendar3"></i> Invoice Details</span></div>
+              <div class="card-body-custom">
+                <div class="form-row form-row-2">
+                  <div><label class="form-label-custom">Invoice Date</label><input type="date" id="invoiceDate" class="form-control-custom"></div>
+                  <div><label class="form-label-custom">Due Date</label><input type="date" id="dueDate" class="form-control-custom"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header-custom">
+                <span class="card-title-custom"><i class="bi bi-list-ul"></i> Invoice Items</span>
+                <button type="button" id="addItemBtn" class="btn-custom btn-primary-custom"><i class="bi bi-plus"></i> Add Item</button>
+              </div>
+              <div class="table-wrapper">
+                <table class="table-custom">
+                  <thead><tr><th>Product</th><th>Qty</th><th>Price (₹)</th><th>Total (₹)</th><th></th></tr></thead>
+                  <tbody id="itemsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary -->
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header-custom"><span class="card-title-custom"><i class="bi bi-calculator"></i> Summary</span></div>
+              <div class="card-body-custom">
+                <div class="invoice-summary-box">
+                  <div class="invoice-summary-row"><span>Subtotal</span><span id="summarySubtotal">₹0.00</span></div>
+                  <div class="mb-3 pt-2">
+                    <label class="form-label-custom">Discount</label>
+                    <div class="d-flex gap-2">
+                      <input type="number" id="discountVal" class="form-control-custom" min="0" value="0">
+                      <select id="discountType" class="form-control-custom" style="width:100px;"><option value="fixed">₹ Fixed</option><option value="percent">% Percent</option></select>
+                    </div>
+                  </div>
+                  <div class="invoice-summary-row"><span style="color:var(--success)">Discount</span><span id="summaryDiscount" style="color:var(--success)">- ₹0.00</span></div>
+                  <div class="invoice-summary-row total-row"><span>Grand Total</span><span id="summaryTotal">₹0.00</span></div>
+                </div>
+                <input type="hidden" id="hiddenSubtotal">
+                <input type="hidden" id="hiddenDiscount">
+                <input type="hidden" id="hiddenTotal">
+                <input type="hidden" id="notes">
+                <button type="submit" class="btn-custom btn-primary-custom w-100 justify-content-center mt-4" style="padding:12px;"><i class="bi bi-save"></i> Update Invoice</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+</div>
+
+<script defer src="../assets/js/app.js"></script>
+<script defer src="../assets/js/invoice.js"></script>
+<script>
+  if (localStorage.getItem('bills_loggedIn') !== 'true') window.location.href = '../login.html';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const invoices = Store.get('invoices', []);
+    const inv = invoices.find(i => i.id === id);
+    if (!inv) { alert('Invoice not found.'); window.location.href = './index.html'; return; }
+
+    document.getElementById('editTitle').textContent = 'Edit ' + id;
+    document.getElementById('invoiceForm').dataset.editId = id;
+    document.getElementById('invoiceDate').value = inv.date;
+    document.getElementById('dueDate').value = inv.dueDate || '';
+    document.getElementById('customerName').value = inv.customerName;
+
+    const customers = Store.get('customers', []);
+    const sel = document.getElementById('customerId');
+    customers.forEach(c => sel.insertAdjacentHTML('beforeend', `<option value="${c.id}" ${c.id === inv.customerId ? 'selected' : ''}>${c.name}</option>`));
+
+    document.getElementById('discountVal').value = inv.discount || 0;
+    document.getElementById('discountType').value = inv.discountType || 'fixed';
+
+    // Will be populated by InvoiceBuilder, but we need items pre-loaded
+    // Remove auto-added item and add existing ones
+    const initItems = inv.items || [];
+    // Override InvoiceBuilder.init to load existing items
+    window._invoiceEditItems = initItems;
+  });
+
+  // Hook into InvoiceBuilder after it's loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    // Re-init after app.js loads
+    setTimeout(function () {
+      if (window._invoiceEditItems && window._invoiceEditItems.length > 0 && window.InvoiceBuilder) {
+        // Clear default empty row
+        document.getElementById('itemsTableBody').innerHTML = '';
+        InvoiceBuilder.itemCount = 0;
+        window._invoiceEditItems.forEach(item => InvoiceBuilder.addItem(item));
+        InvoiceBuilder.recalculate();
+      }
+    }, 200);
+  });
+</script>
+</body>
+</html>
